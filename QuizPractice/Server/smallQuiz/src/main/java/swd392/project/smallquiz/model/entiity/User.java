@@ -1,4 +1,4 @@
-package swd392.project.smallquiz.entity;
+package swd392.project.smallquiz.model.entiity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
