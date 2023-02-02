@@ -3,7 +3,7 @@ package swd392.project.smallquiz.sender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import swd392.project.smallquiz.entity.Role;
+import swd392.project.smallquiz.model.entiity.Role;
 import swd392.project.smallquiz.repository.RoleRepository;
 
 import java.sql.*;
