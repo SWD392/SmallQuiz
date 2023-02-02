@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import swd392.project.smallquiz.entity.Role;
 import swd392.project.smallquiz.entity.User;
 import swd392.project.smallquiz.entity.UserGroup;
 import swd392.project.smallquiz.repository.RoleRepository;
@@ -35,16 +34,10 @@ import java.util.List;
             }
             List<UserGroup> userGroup= userGroupRespository.findUserGroupsByUserId(user.getUserId());
             List<String> roles= new ArrayList<>();
-            for(int i=0;i<userGroup.size();i++){
-                Role role= roleRepository.findRoleByRoleId(userGroup.get(i).getRoleId());
-                roles.add(role.getRoleName());
-            }
+            userGroup.forEach((element -> roles.add(roleRepository.findRoleByRoleId(element.getRoleId()).getRoleName())));
             List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
             if (roles != null) {
-                for (String role : roles) {
-                    GrantedAuthority authority = new SimpleGrantedAuthority(role);
-                    grantList.add(authority);
-                }
+                roles.forEach((element)->grantList.add(new SimpleGrantedAuthority(element)));
             }
             return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
                     grantList);
@@ -65,7 +58,7 @@ import java.util.List;
             return false;
         }
         public boolean saveNewUserGroup(int userID, int roleId) {
-            if(!userGroupRespository.existsByRoleId(roleId)) {
+            if(userGroupRespository.existsByRoleId(roleId)) {
                 if(!userGroupRespository.existsByUserId(userID)) {
                     UserGroup newUserGroup = new UserGroup();
                     newUserGroup.setUserId(userID);
