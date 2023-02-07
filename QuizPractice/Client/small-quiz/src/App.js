@@ -1,13 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
-import Login from './pages/login.JSX';
-
+import Login from './pages/Login.js';
+import React   from 'react';
 
 function App() {
+
+
   return (
-   <div>
-      <Login/>
-   </div>
+   <>
+      <Login />
+   </>
   );
 }
 
