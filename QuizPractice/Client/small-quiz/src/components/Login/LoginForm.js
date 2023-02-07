@@ -11,10 +11,22 @@ export default function LoginForm() {
     const {register,handleSubmit,formState: {errors}} = useForm();
     const onSubmit = (data) => console.log(data);
 
-    function loginclick(){
+    async function loginclick(){
 console.warn(username,password)
 let item={username,password};
-let result= fetch("http://localhost:8083/authenticate")
+let result= await fetch("http://localhost:8083/authenticate",{
+  method : 'POST',
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": 'application/json'
+  },
+  body: JSON.stringify(item)
+
+});
+result = await result.json();
+localStorage.setItem("",JSON.stringify(result))
+
+
     }
   return (
     <>
