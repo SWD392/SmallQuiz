@@ -58,15 +58,13 @@ import java.util.List;
             return false;
         }
         public boolean saveNewUserGroup(int userID, int roleId) {
-            if(userGroupRespository.existsByRoleId(roleId)) {
-                if(!userGroupRespository.existsByUserId(userID)) {
+            if(!userGroupRespository.existsByRoleId(roleId)&&!userGroupRespository.existsByUserId(userID)) {
                     UserGroup newUserGroup = new UserGroup();
                     newUserGroup.setUserId(userID);
                     newUserGroup.setRoleId(roleId);
                     userGroupRespository.save(newUserGroup);
                     return true;
                 }
-            }
             return false;
         }
 }
