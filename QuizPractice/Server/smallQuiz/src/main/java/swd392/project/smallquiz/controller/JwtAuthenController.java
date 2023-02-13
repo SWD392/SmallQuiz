@@ -1,4 +1,5 @@
 package swd392.project.smallquiz.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,9 +11,9 @@ import swd392.project.smallquiz.request.JwtRequest;
 import swd392.project.smallquiz.request.UserRequest;
 import swd392.project.smallquiz.response.JwtResponse;
 import swd392.project.smallquiz.security.JwtTokenUtil;
-import swd392.project.smallquiz.sender.DatabaseManager;
 import swd392.project.smallquiz.services.AuthenticateService;
 import swd392.project.smallquiz.services.JwtUserDetailsService;
+
 @RestController
 @CrossOrigin
 public class JwtAuthenController {
@@ -21,17 +22,13 @@ public class JwtAuthenController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
-    DatabaseManager databaseManager;
-    @Autowired
     private JwtUserDetailsService userDetailsService;
-    @RequestMapping(value = "/generateDatabase", method = RequestMethod.GET)
-    public void generateDatabase() {
-        databaseManager.DatabaseManager();
-    }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> saveUser(@RequestBody UserRequest user) throws Exception {
         return ResponseEntity.ok(userDetailsService.saveNewAccount(user));
     }
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -40,6 +37,7 @@ public class JwtAuthenController {
         final String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token));
     }
+
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

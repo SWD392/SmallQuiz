@@ -5,11 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "Question")
+@Table(name = "question")
 public class Question {
 
     @Id
@@ -22,4 +24,6 @@ public class Question {
     @Column(name = "content")
     private String content;
 
+//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+//    private List<Answer> answerList = new ArrayList<>();
 }

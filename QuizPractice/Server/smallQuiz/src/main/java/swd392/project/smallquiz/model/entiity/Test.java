@@ -1,27 +1,28 @@
 package swd392.project.smallquiz.model.entiity;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "answer")
-public class Answer {
+@Table(name = "test")
+public class Test {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "answer_content")
-    private String content;
+    @Column(name = "create_date")
+    private Instant create_date;
 
-    private Boolean status;
+    @Column(name = "score")
+    private Long score;
 
     @ManyToOne
-//    @JoinColumn(name = "question_id", nullable = false)
-    private Question question;
+    @JoinColumn(name = "user_id")
+    private User user;
 }
