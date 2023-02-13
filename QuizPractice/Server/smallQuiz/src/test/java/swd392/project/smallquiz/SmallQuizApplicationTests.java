@@ -1,6 +1,6 @@
 package swd392.project.smallquiz;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
