@@ -7,14 +7,18 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
-public class User {
+@Table(name = "user_account")
+public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    public int userId;
+    public Long userId;
     @Column(name = "user_name")
     public String userName;
     @Column
     public String password;
+
+    @OneToOne
+//    @JoinColumn(name = "user_id")
+    private UserInfo userInfo;
 }
