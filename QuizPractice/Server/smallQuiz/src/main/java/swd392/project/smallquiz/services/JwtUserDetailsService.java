@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import swd392.project.smallquiz.model.entiity.Role;
 import swd392.project.smallquiz.model.entiity.UserAccount;
 import swd392.project.smallquiz.model.entiity.UserGroup;
-import swd392.project.smallquiz.model.entiity.UserInfo;
 import swd392.project.smallquiz.repository.RoleRepository;
 import swd392.project.smallquiz.repository.UserAccountRepository;
 import swd392.project.smallquiz.repository.UserGroupRespository;
