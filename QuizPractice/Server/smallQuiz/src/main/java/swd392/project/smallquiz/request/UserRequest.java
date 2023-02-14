@@ -1,4 +1,6 @@
 package swd392.project.smallquiz.request;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sun.xml.internal.ws.developer.Serialization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,4 +15,8 @@ public class UserRequest {
     private String password;
     @NotNull
     private String role;
+    @NotNull
+    private String firstName;
+    @NotNull
+    private String lastName;
 }
