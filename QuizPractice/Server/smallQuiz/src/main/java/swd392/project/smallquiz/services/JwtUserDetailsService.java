@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import swd392.project.smallquiz.model.entiity.User;
 import swd392.project.smallquiz.model.entiity.UserGroup;
+import swd392.project.smallquiz.model.entiity.UserInfo;
 import swd392.project.smallquiz.repository.RoleRepository;
 import swd392.project.smallquiz.repository.UserGroupRespository;
+import swd392.project.smallquiz.repository.UserInfoRepository;
 import swd392.project.smallquiz.repository.UserRepository;
 import swd392.project.smallquiz.request.UserRequest;
 import swd392.project.smallquiz.security.PasswordEncode;
@@ -19,6 +21,8 @@ import java.util.List;
     public class JwtUserDetailsService implements UserDetailsService {
         @Autowired
         UserRepository userRepository;
+        @Autowired
+        UserInfoRepository userInfoRepository;
         @Autowired
         UserGroupRespository userGroupRespository;
         @Autowired
@@ -43,11 +47,16 @@ import java.util.List;
                     grantList);
         }
         public boolean saveNewAccount(UserRequest userRequest) {
+            if(userRequest != null){
             if(!userRepository.existsByUserName(userRequest.getUsername())) {
                 User newUser = new User();
                 newUser.setUserName(userRequest.getUsername());
                 newUser.setPassword(passwordEncode.passwordEncoder().encode(userRequest.getPassword()));
                 userRepository.save(newUser);
+                UserInfo userInfo= new UserInfo();
+                userInfo.setFirstName(userRequest.getFirstName());
+                userInfo.setLastName(userRequest.getLastName());
+                userInfoRepository.save(userInfo);
                 int userId=userRepository.findByUserName(newUser.getUserName()).getUserId();
                 int roleId=roleRepository.findRoleByRoleName(userRequest.getRole()).getRoleId();
                 if(saveNewUserGroup(userId,roleId)){
@@ -57,8 +66,10 @@ import java.util.List;
             }
             return false;
         }
+            return false;
+        }
         public boolean saveNewUserGroup(int userID, int roleId) {
-            if(!userGroupRespository.existsByRoleId(roleId)&&!userGroupRespository.existsByUserId(userID)) {
+            if(!userGroupRespository.existsByUserId(userID)) {
                     UserGroup newUserGroup = new UserGroup();
                     newUserGroup.setUserId(userID);
                     newUserGroup.setRoleId(roleId);
