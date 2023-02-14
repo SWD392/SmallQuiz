@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 import swd392.project.smallquiz.model.entiity.Role;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role,Integer> {
+public interface RoleRepository extends JpaRepository<Role,Long> {
     boolean existsByRoleName(String role);
     Role findRoleByRoleName(String role);
-    Role findRoleByRoleId(int roleId);
+    Role findRoleByRoleId(Long roleId);
 }

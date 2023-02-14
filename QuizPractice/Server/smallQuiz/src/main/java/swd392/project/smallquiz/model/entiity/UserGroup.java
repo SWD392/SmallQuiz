@@ -10,9 +10,13 @@ public class UserGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="group_id")
-    public int groupId;
-    @Column(name="user_id")
-    public int userId;
-    @Column(name="role_id")
-    public int roleId;
+    public Long groupId;
+
+    @ManyToOne
+//    @JoinColumn(name = "user_id")
+    private UserAccount userAccount;
+
+    @ManyToOne
+//    @JoinColumn(name = "role_id")
+    private Role role;
 }

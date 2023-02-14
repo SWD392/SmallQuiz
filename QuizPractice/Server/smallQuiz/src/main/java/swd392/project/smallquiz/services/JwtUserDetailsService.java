@@ -1,4 +1,5 @@
 package swd392.project.smallquiz.services;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,76 +7,66 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import swd392.project.smallquiz.model.entiity.User;
+import swd392.project.smallquiz.model.entiity.Role;
+import swd392.project.smallquiz.model.entiity.UserAccount;
 import swd392.project.smallquiz.model.entiity.UserGroup;
-import swd392.project.smallquiz.model.entiity.UserInfo;
 import swd392.project.smallquiz.repository.RoleRepository;
+import swd392.project.smallquiz.repository.UserAccountRepository;
 import swd392.project.smallquiz.repository.UserGroupRespository;
-import swd392.project.smallquiz.repository.UserInfoRepository;
-import swd392.project.smallquiz.repository.UserRepository;
 import swd392.project.smallquiz.request.UserRequest;
 import swd392.project.smallquiz.security.PasswordEncode;
+
 import java.util.ArrayList;
 import java.util.List;
-    @Service
-    public class JwtUserDetailsService implements UserDetailsService {
-        @Autowired
-        UserRepository userRepository;
-        @Autowired
-        UserInfoRepository userInfoRepository;
-        @Autowired
-        UserGroupRespository userGroupRespository;
-        @Autowired
-        RoleRepository roleRepository;
-        @Autowired
-        PasswordEncode passwordEncode;
-        @Override
-        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            User user = userRepository.findByUserName(username);
-            if (user == null) {
-                System.out.println("User not found! " + username);
-                throw new UsernameNotFoundException("User " + username + " was not found in the database");
-            }
-            List<UserGroup> userGroup= userGroupRespository.findUserGroupsByUserId(user.getUserId());
-            List<String> roles= new ArrayList<>();
-            userGroup.forEach((element -> roles.add(roleRepository.findRoleByRoleId(element.getRoleId()).getRoleName())));
-            List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
-            if (roles != null) {
-                roles.forEach((element)->grantList.add(new SimpleGrantedAuthority(element)));
-            }
-            return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
-                    grantList);
+
+@Service
+public class JwtUserDetailsService implements UserDetailsService {
+    @Autowired
+    UserAccountRepository userAccountRepository;
+    @Autowired
+    UserGroupRespository userGroupRespository;
+    @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    PasswordEncode passwordEncode;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserAccount userAccount = userAccountRepository.findByUserName(username);
+        if (userAccount == null) {
+            System.out.println("User not found! " + username);
+            throw new UsernameNotFoundException("User " + username + " was not found in the database");
         }
-        public boolean saveNewAccount(UserRequest userRequest) {
-            if(userRequest != null){
-            if(!userRepository.existsByUserName(userRequest.getUsername())) {
-                User newUser = new User();
-                newUser.setUserName(userRequest.getUsername());
-                newUser.setPassword(passwordEncode.passwordEncoder().encode(userRequest.getPassword()));
-                userRepository.save(newUser);
-                UserInfo userInfo= new UserInfo();
-                userInfo.setFirstName(userRequest.getFirstName());
-                userInfo.setLastName(userRequest.getLastName());
-                userInfoRepository.save(userInfo);
-                int userId=userRepository.findByUserName(newUser.getUserName()).getUserId();
-                int roleId=roleRepository.findRoleByRoleName(userRequest.getRole()).getRoleId();
-                if(saveNewUserGroup(userId,roleId)){
-                    return true;
-                }
-                return false;
-            }
-            return false;
+        List<UserGroup> userGroup = userGroupRespository.findUserGroupsByUserAccount(userAccount);
+        List<String> roles = new ArrayList<>();
+        userGroup.forEach((element -> roles.add(roleRepository.findRoleByRoleId(element.getRole().getRoleId()).getRoleName())));
+        List<GrantedAuthority> grantList = new ArrayList<>();
+        roles.forEach((element) -> grantList.add(new SimpleGrantedAuthority(element)));
+        return new org.springframework.security.core.userdetails.User(userAccount.getUserName(), userAccount.getPassword(),
+                grantList);
+    }
+
+    public boolean saveNewAccount(UserRequest userRequest) {
+        if (!userAccountRepository.existsByUserName(userRequest.getUsername())) {
+            UserAccount newUserAccount = new UserAccount();
+            newUserAccount.setUserName(userRequest.getUsername());
+            newUserAccount.setPassword(passwordEncode.passwordEncoder().encode(userRequest.getPassword()));
+            userAccountRepository.save(newUserAccount);
+            UserAccount userAccount = userAccountRepository.findByUserName(newUserAccount.getUserName());
+            Role role = roleRepository.findRoleByRoleName(userRequest.getRole());
+            return saveNewUserGroup(userAccount, role);
         }
-            return false;
+        return false;
+    }
+
+    public boolean saveNewUserGroup(UserAccount userAccount, Role role) {
+        if (!userGroupRespository.existsByUserAccount(userAccount) && !userGroupRespository.existsByRole(role)) {
+            UserGroup newUserGroup = new UserGroup();
+            newUserGroup.setUserAccount(userAccount);
+            newUserGroup.setRole(role);
+            userGroupRespository.save(newUserGroup);
+            return true;
         }
-        public boolean saveNewUserGroup(int userID, int roleId) {
-            if(!userGroupRespository.existsByUserId(userID)) {
-                    UserGroup newUserGroup = new UserGroup();
-                    newUserGroup.setUserId(userID);
-                    newUserGroup.setRoleId(roleId);
-                    userGroupRespository.save(newUserGroup);
-                    return true;
-                }
-            return false;
-        }
+        return false;
+    }
 }
