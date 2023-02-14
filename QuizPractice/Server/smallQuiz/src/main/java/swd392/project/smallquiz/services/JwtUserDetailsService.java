@@ -10,11 +10,9 @@ import org.springframework.stereotype.Service;
 import swd392.project.smallquiz.model.entiity.Role;
 import swd392.project.smallquiz.model.entiity.UserAccount;
 import swd392.project.smallquiz.model.entiity.UserGroup;
-import swd392.project.smallquiz.model.entiity.UserInfo;
 import swd392.project.smallquiz.repository.RoleRepository;
 import swd392.project.smallquiz.repository.UserAccountRepository;
 import swd392.project.smallquiz.repository.UserGroupRespository;
-import swd392.project.smallquiz.repository.UserInfoRepository;
 import swd392.project.smallquiz.request.UserRequest;
 import swd392.project.smallquiz.security.PasswordEncode;
 
@@ -29,8 +27,6 @@ public class JwtUserDetailsService implements UserDetailsService {
     UserGroupRespository userGroupRespository;
     @Autowired
     RoleRepository roleRepository;
-    @Autowired
-    UserInfoRepository userInfoRepository;
     @Autowired
     PasswordEncode passwordEncode;
 
@@ -56,11 +52,9 @@ public class JwtUserDetailsService implements UserDetailsService {
                 UserAccount newUserAccount = new UserAccount();
                 newUserAccount.setUserName(userRequest.getUsername());
                 newUserAccount.setPassword(passwordEncode.passwordEncoder().encode(userRequest.getPassword()));
+                newUserAccount.setFirstName(userRequest.getFirstName());
+                newUserAccount.setLastName(userRequest.getLastName());
                 userAccountRepository.save(newUserAccount);
-                UserInfo userInfo = new UserInfo();
-                userInfo.setFirstName(userRequest.getFirstName());
-                userInfo.setLastName(userRequest.getLastName());
-                userInfoRepository.save(userInfo);
                 UserAccount userAccount = userAccountRepository.findByUserName(newUserAccount.getUserName());
                 Role role = roleRepository.findRoleByRoleName(userRequest.getRole());
                 return saveNewUserGroup(userAccount, role);

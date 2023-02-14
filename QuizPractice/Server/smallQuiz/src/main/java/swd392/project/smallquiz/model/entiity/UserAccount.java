@@ -17,8 +17,8 @@ public class UserAccount {
     public String userName;
     @Column
     public String password;
-
-    @OneToOne
-//    @JoinColumn(name = "user_id")
-    private UserInfo userInfo;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
 }
