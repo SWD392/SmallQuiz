@@ -13,10 +13,10 @@ public class UserGroup {
     public Long groupId;
 
     @ManyToOne
-//    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id")
     private UserAccount userAccount;
 
     @ManyToOne
-//    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id")
     private Role role;
 }

@@ -19,6 +19,7 @@ public class UserAccount {
     public String password;
 
     @OneToOne
-//    @JoinColumn(name = "user_id")
+    @MapsId
+    @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 }

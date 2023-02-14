@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Table(name = "user_info")
 public class UserInfo {
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
@@ -21,6 +22,7 @@ public class UserInfo {
     private String lastName;
 
     @OneToOne
-//    @JoinColumn(name = "user_id")
+    @MapsId
+    @JoinColumn(name = "user_id")
     private UserAccount userAccount;
 }
