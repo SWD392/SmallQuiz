@@ -24,5 +24,5 @@ public class Test {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserInfo userInfo;
+    private UserAccount userAccount;
 }
