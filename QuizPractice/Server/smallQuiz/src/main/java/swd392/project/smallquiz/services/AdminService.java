@@ -27,13 +27,7 @@ public class AdminService {
         List<Question> questions = questionRepository.findAll();
 
         for (Question question : questions) {
-            List<AnswerDto> answerDtos = new ArrayList<>();
-            answerRepository.findByQuestion(question)
-                    .forEach(answer -> {
-                        AnswerDto answerDto = new AnswerDto();
-                        BeanUtils.copyProperties(answer, answerDto);
-                        answerDtos.add(answerDto);
-                    });
+            List<AnswerDto> answerDtos = answerRepository.findByQuestion(question);
             QuestionResponse questionResponse = new QuestionResponse();
 
             BeanUtils.copyProperties(question, questionResponse);
