@@ -1,11 +1,13 @@
 package swd392.project.smallquiz.model.entiity;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
+@Data
 @Getter
 @Setter
 @Entity
@@ -22,6 +24,6 @@ public class Answer {
     private Boolean status;
 
     @ManyToOne
-//    @JoinColumn(name = "question_id", nullable = false)
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 }
