@@ -1,11 +1,13 @@
 package swd392.project.smallquiz.model.entiity;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
+@Data
 @Getter
 @Setter
 @Entity
