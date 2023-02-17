@@ -27,9 +27,9 @@ const Login = () => {
 				'Password must have 8 charater , upper case,and speacial char '
 			);
 		// setsuccessMessage('Successfully Validated');
-		if(input.email !== 'thinhxom1109@gmail.com' || input.password !== 'Thinhhuyen11209091@') return seterrorMessage('Invalid email or password');
+		if(input.email !== 'thinhxom1109@gmail.com' || input.password !== 'Thinhhuyen1120009@') return seterrorMessage('Invalid email or password');
 
-		nagative('/home')
+		nagative('/list_question')
 		localStorage.setItem('auth', true)
 
 	};
