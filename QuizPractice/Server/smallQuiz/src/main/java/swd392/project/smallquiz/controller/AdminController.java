@@ -21,9 +21,10 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("/listQuestions")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<QuestionResponse> getQuestions() {
         return adminService.findAllQuestion();
     }
+
 
 }
