@@ -23,6 +23,9 @@ public class Answer {
 
     private Boolean status;
 
+    @Column(name = "delete_flag")
+    private Boolean deleteFlag;
+
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;

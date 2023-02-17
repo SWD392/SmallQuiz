@@ -5,8 +5,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,6 +22,6 @@ public class Question {
     @Column(name = "content")
     private String content;
 
-//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-//    private List<Answer> answerList = new ArrayList<>();
+    @Column(name = "delete_flag")
+    private Boolean deleteFlag;
 }
