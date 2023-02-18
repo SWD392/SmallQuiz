@@ -24,7 +24,7 @@ public class Answer {
     private Boolean status;
 
     @Column(name = "delete_flag")
-    private Boolean deleteFlag;
+    private Boolean deleteFlag = Boolean.FALSE;
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
