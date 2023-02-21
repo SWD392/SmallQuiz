@@ -8,8 +8,9 @@ import swd392.project.smallquiz.model.entiity.Question;
 import java.util.List;
 
 @Repository
-    public interface AnswerRepository extends JpaRepository<Answer, Long> {
+public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
-        List<Answer> findByQuestion(Question question);
+    List<Answer> findByQuestion(Question question);
+
 
 }

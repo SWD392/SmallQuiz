@@ -2,7 +2,6 @@ package swd392.project.smallquiz.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import swd392.project.smallquiz.request.QuestionRequest;
 import swd392.project.smallquiz.response.QuestionResponse;
@@ -13,7 +12,6 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping({"/admin"})
-
 public class AdminController {
 
     @Autowired
@@ -25,13 +23,18 @@ public class AdminController {
         return adminService.findAllQuestion();
     }
 
+    @GetMapping("/search/{content}")
+    public List<QuestionResponse> getByQuestionContent(@PathVariable String content) {
+        return adminService.findQuestionByContent(content);
+    }
+
     @PostMapping("/create_question")
-    public ResponseEntity<?> createQuestion(@RequestBody QuestionRequest questionRequest){
+    public ResponseEntity<?> createQuestion(@RequestBody QuestionRequest questionRequest) {
         return adminService.createNewQuestion(questionRequest);
     }
 
     @PutMapping("/update_question")
-    public ResponseEntity<?> updateQuestion(@RequestParam Long questionId, @RequestBody QuestionRequest questionRequest){
+    public ResponseEntity<?> updateQuestion(@RequestParam Long questionId, @RequestBody QuestionRequest questionRequest) {
         return adminService.updateQuestion(questionId, questionRequest);
     }
 }

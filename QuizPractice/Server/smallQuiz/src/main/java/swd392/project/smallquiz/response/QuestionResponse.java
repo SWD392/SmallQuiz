@@ -13,4 +13,6 @@ import java.util.List;
 @Setter
 public class QuestionResponse extends Question {
     private List<AnswerDto> answers;
+
+
 }
