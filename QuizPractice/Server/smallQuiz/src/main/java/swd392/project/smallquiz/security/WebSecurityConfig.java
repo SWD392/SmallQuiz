@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/api/excel/upload","/authenticate", "/register","/generateDatabase","/test","/admin").permitAll()
+                .authorizeRequests().antMatchers("/api/excel/upload","/authenticate", "/register","/generateDatabase","/test","/admin","/info").permitAll()
                 .anyRequest().authenticated().and().exceptionHandling().accessDeniedPage("/deny").and().
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
