@@ -1,47 +1,46 @@
 import React from 'react';
 import { emailValidator,passwordValidator } from '../components/regexValidator';
 import {Navigate, useNavigate} from "react-router-dom"
+import { useState } from 'react';
+import axios from 'axios';
 
 const Login = () => {
 	const nagative = useNavigate()
 
-	const [input, setInput] = React.useState({ email: '', password: '' });
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 
-	const [errorMessage, seterrorMessage] = React.useState('');
-
-	const handleChange = e => {
-		setInput({ ...input, [e.target.name]: e.target.value });
+	const handleEmailChange = (event) => {
+		setEmail(event.target.value);
 	};
 
-	React.useEffect(()=>{
-		 nagative('/')
-	},[])
-
-	const formSubmitter = e => {
-		e.preventDefault();
-	
-		if (!emailValidator(input.email)) return seterrorMessage('Please enter valid email id');
-
-		if (!passwordValidator(input.password))
-			return seterrorMessage(
-				'Password must have 8 charater , upper case,and speacial char '
-			);
-		// setsuccessMessage('Successfully Validated');
-		if(input.email !== 'thinhxom1109@gmail.com' || input.password !== 'Thinhhuyen1120009@') return seterrorMessage('Invalid email or password');
-
-		nagative('/list_question')
-		localStorage.setItem('auth', true)
-
+	const handlePasswordChange = (event) => {
+		setPassword(event.target.value);
 	};
 
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		const data = {
+			username: email,
+			password: password,
+		};
+		axios.post("http://localhost:8080/authenticate", data).then((response) => {
+			const token = response.data.token;
+			localStorage.setItem("token", token);
+			// Redirect to dashboard or any page
+			console.log(response.data);
+		});
+	};
+	//email:thinhxom1109
+	//password:Thinhhuyen1120009@
 	return (
 		<div>
 			<div className="limiter">
 				<div className="container-login100" style={{ backgroundImage: 'url("images/bg-01.jpg")' }}>
 					<div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
-						<form className="login100-form validate-form" onSubmit={formSubmitter}>
+						<form className="login100-form validate-form" onSubmit={handleSubmit}>
 							<span className="login100-form-title p-b-49">Login</span>
-							{errorMessage.length > 0 && <div style={{ marginBottom: '10px', color: 'red' }}>{errorMessage}</div>}
+							
 							
 							<div className="wrap-input100 validate-input m-b-23" data-validate="email is required">
 								<span className="label-input100">Email</span>
@@ -50,7 +49,7 @@ const Login = () => {
 									type="text"
 									name="email"
 									placeholder="Type your username"
-									onChange={handleChange}
+									onChange={handleEmailChange}
 								/>
 								<span className="focus-input100" data-symbol="" />
 							</div>
@@ -61,7 +60,7 @@ const Login = () => {
 									type="password"
 									name="password"
 									placeholder="Type your password"
-									onChange={handleChange}
+									onChange={handlePasswordChange}
 								/>
 								<span className="focus-input100" data-symbol="" />
 							</div>
