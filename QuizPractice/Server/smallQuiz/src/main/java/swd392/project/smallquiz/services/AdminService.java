@@ -52,6 +52,27 @@ public class AdminService {
         return questionResponses;
     }
 
+    public List<QuestionResponse> findQuestionByContent(String content) {
+        List<QuestionResponse> questionResponses = new ArrayList<>();
+
+        List<Question> questions = questionRepository.findQuestionByContent(content);
+        questions.forEach(question -> {
+            List<AnswerDto> answerDtos = new ArrayList<>();
+            answerRepository.findByQuestion(question)
+                    .forEach(answer -> {
+                        AnswerDto answerDto = new AnswerDto();
+                        BeanUtils.copyProperties(answer, answerDto);
+                        answerDtos.add(answerDto);
+                    });
+            QuestionResponse questionResponse = new QuestionResponse();
+
+            BeanUtils.copyProperties(question, questionResponse);
+            questionResponse.setAnswers(answerDtos);
+            questionResponses.add(questionResponse);
+        });
+        return questionResponses;
+    }
+
     @Transactional(rollbackOn = {Exception.class, Throwable.class})
     public ResponseEntity<?> createNewQuestion(QuestionRequest questionRequest) {
         try {
