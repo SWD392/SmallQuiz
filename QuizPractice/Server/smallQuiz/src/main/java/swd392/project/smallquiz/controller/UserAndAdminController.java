@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import swd392.project.smallquiz.model.dto.UserAccountDto;
 import swd392.project.smallquiz.request.QuestionRequest;
+import swd392.project.smallquiz.request.UserInfoRequest;
 import swd392.project.smallquiz.request.UserRequest;
 import swd392.project.smallquiz.services.UserAndAdminService;
 
@@ -16,7 +17,7 @@ public class UserAndAdminController {
     @Autowired
     UserAndAdminService userAndAdminService;
     @PostMapping({"/info"})
-    public UserAccountDto getInfo(@RequestBody UserRequest userRequest){
-        return userAndAdminService.getUserAndAdminInfo(userRequest);
+    public UserAccountDto getInfo(@RequestBody UserInfoRequest userInfoRequest){
+        return userAndAdminService.getUserAndAdminInfo(userInfoRequest);
     }
 }

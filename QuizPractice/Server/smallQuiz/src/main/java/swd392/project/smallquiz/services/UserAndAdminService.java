@@ -7,6 +7,7 @@ import swd392.project.smallquiz.mapper.UserMapper;
 import swd392.project.smallquiz.model.dto.UserAccountDto;
 import swd392.project.smallquiz.model.entiity.UserAccount;
 import swd392.project.smallquiz.repository.UserAccountRepository;
+import swd392.project.smallquiz.request.UserInfoRequest;
 import swd392.project.smallquiz.request.UserRequest;
 
 @Service
@@ -16,8 +17,8 @@ public class UserAndAdminService {
     @Autowired
     UserMapper userMapper;
 
-    public UserAccountDto getUserAndAdminInfo(UserRequest userRequest) {
-        UserAccount userAccount = userAccountRepository.findByUserName(userRequest.getUsername());
+    public UserAccountDto getUserAndAdminInfo(UserInfoRequest userInfoRequest) {;
+        UserAccount userAccount = userAccountRepository.findByUserName(userInfoRequest.getUsername());
         UserAccountDto userAccountDto= userMapper.employeeToEmployeeDTO(userAccount);
         return userAccountDto;
     }
