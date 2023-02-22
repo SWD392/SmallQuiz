@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import swd392.project.smallquiz.model.dto.AnswerDto;
 import swd392.project.smallquiz.model.entiity.Answer;
 import swd392.project.smallquiz.model.entiity.Question;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class AdminService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();

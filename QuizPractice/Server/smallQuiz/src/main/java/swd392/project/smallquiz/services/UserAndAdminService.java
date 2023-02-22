@@ -19,7 +19,7 @@ public class UserAndAdminService {
 
     public UserAccountDto getUserAndAdminInfo(UserInfoRequest userInfoRequest) {;
         UserAccount userAccount = userAccountRepository.findByUserName(userInfoRequest.getUsername());
-        UserAccountDto userAccountDto= userMapper.employeeToEmployeeDTO(userAccount);
+        UserAccountDto userAccountDto= userMapper.convertUserAcc(userAccount);
         return userAccountDto;
     }
 }

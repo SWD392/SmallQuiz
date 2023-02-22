@@ -12,6 +12,6 @@ import java.util.List;
 public interface UserGroupRespository extends JpaRepository<UserGroup,Long> {
     boolean existsByUserAccount(UserAccount userAccount);
     boolean existsByRole(Role role);
-
+    UserGroup findUserGroupByUserAccount(UserAccount userAccount);
     List<UserGroup> findUserGroupsByUserAccount(UserAccount userAccount);
 }
