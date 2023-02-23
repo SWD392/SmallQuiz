@@ -7,16 +7,20 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import swd392.project.smallquiz.model.dto.RoleDto;
 import swd392.project.smallquiz.request.JwtRequest;
 import swd392.project.smallquiz.request.UserRequest;
 import swd392.project.smallquiz.response.JwtResponse;
 import swd392.project.smallquiz.security.JwtTokenUtil;
 import swd392.project.smallquiz.services.AuthenticateService;
+import swd392.project.smallquiz.services.GettingRoleService;
 import swd392.project.smallquiz.services.JwtUserDetailsService;
 
 @RestController
 @CrossOrigin
 public class JwtAuthenController {
+    @Autowired
+    GettingRoleService gettingRoleService;
     @Autowired
     private AuthenticateService authenticationManager;
     @Autowired
@@ -35,7 +39,8 @@ public class JwtAuthenController {
         final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+        RoleDto role=gettingRoleService.getGettingRole(authenticationRequest.getUsername());
+        return ResponseEntity.ok(new JwtResponse(token,role.getRoleName()));
     }
 
     private void authenticate(String username, String password) throws Exception {

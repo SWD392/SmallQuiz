@@ -23,7 +23,8 @@ public class GettingRoleService {
     UserGroupRespository userGroupRespository;
     @Autowired
     RoleMapper roleMapper;
-    public RoleDto getGettingRole(UserInfoRequest userInfoRequest) {
+    public RoleDto getGettingRole(String username) {
+        UserInfoRequest userInfoRequest= new UserInfoRequest(username);
         UserAccount userAccount = userAccountRepository.findByUserName(userInfoRequest.getUsername());
         UserGroup userGroup= userGroupRespository.findUserGroupByUserAccount(userAccount);
         Role role= roleRepository.findRoleByRoleId(userGroup.getRole().roleId);

@@ -16,14 +16,8 @@ import swd392.project.smallquiz.services.UserAndAdminService;
 public class UserAndAdminController {
     @Autowired
     UserAndAdminService userAndAdminService;
-    @Autowired
-    GettingRoleService gettingRoleService;
     @PostMapping({"/info"})
     public UserAccountDto getInfo(@RequestBody UserInfoRequest userInfoRequest){
         return userAndAdminService.getUserAndAdminInfo(userInfoRequest);
-    }
-    @PostMapping({"/role"})
-    public RoleDto getRole(@RequestBody UserInfoRequest request){
-        return gettingRoleService.getGettingRole(request);
     }
 }
