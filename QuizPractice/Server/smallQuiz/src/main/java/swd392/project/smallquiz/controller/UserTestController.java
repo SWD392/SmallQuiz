@@ -3,7 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import swd392.project.smallquiz.model.dto.TestDto;
+import swd392.project.smallquiz.response.TestResponse;
 import swd392.project.smallquiz.services.LoadingTestService;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class UserTestController {
     LoadingTestService loadingTestService;
 //    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping({ "/loadTest" })
-    public List<TestDto> loadTest() {
+    public List<TestResponse> loadTest() {
         return loadingTestService.loadTest();
     }
 }
