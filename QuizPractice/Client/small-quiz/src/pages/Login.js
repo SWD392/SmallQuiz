@@ -4,13 +4,11 @@ import axios from "axios";
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 const Login = () => {
   const nagative = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -26,15 +24,17 @@ const Login = () => {
       password: password,
     };
     axios.post("http://localhost:8081/authenticate", data).then((response) => {
-      const token = response.data.token;
+      const token = response.data.jwttoken;
+      const role = response.data.role
       localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
       // Redirect to dashboard or any page
-	  console.log(response.data);
-	  nagative("/list_question")
+	  nagative("/home")
 	  toast("Wow so easy!");
     });
   };
 
+ 
   return (
     <div>
       <div className="limiter">

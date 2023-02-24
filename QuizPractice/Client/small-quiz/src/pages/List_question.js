@@ -9,7 +9,7 @@ export default function List_question() {
   const [info, setInfo] = useState([]);
   const [record, setRecord] = useState();
   const token = localStorage.getItem("token");
-  
+
 
 
   // useEffect(() => {
@@ -17,6 +17,7 @@ export default function List_question() {
   //     setInfo(res.data);
   //   });
   // }, []);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,18 +30,35 @@ export default function List_question() {
 
     fetchData();
   }, []);
+  const decode = token ? jwt_decode(token) : null;
+  useEffect(() => {
+    const fetchInfo = async () => {
+      const data = {
+        username: decode.sub,
+      }
+      try {
+        axios.post("http://localhost:8081/info",data).then((response) => {
+          console.log(response.data);
+        });
+      } catch (error) {}
+    };
+
+    fetchInfo();
+  }, []);
+
   const nagative = useNavigate();
 
   
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("admin");
     nagative("/list_question");
   };
 
   
 
-  console.log(info);
+  
   return (
     <div>
  
@@ -99,9 +117,7 @@ export default function List_question() {
                 </ul>
               </div>
             </nav>
-            {
-              info[0].content
-            }
+            List_question
             <footer className="footer">
               <div className="row align-items-center justify-content-xl-between">
                 <div className="col-xl-6 m-auto text-center">
