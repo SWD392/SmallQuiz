@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import swd392.project.smallquiz.model.dto.AnswerDto;
 import swd392.project.smallquiz.model.entiity.Answer;
@@ -77,15 +76,18 @@ public class AdminService {
     @Transactional(rollbackOn = {Exception.class, Throwable.class})
     public ResponseEntity<?> createNewQuestion(QuestionRequest questionRequest) {
         try {
+            QuestionResponse questionResponse = new QuestionResponse();
             Question question = new Question();
             question.setContent(questionRequest.getQuestionContent());
             question.setCreatedDate(Instant.now());
             question.setDeleteFlag(Boolean.FALSE);
             Question response = questionRepository.save(question);
 
-            List<Answer> answerList = insertAnswer(questionRequest, question);
+            List<AnswerDto> answerList = insertAnswer(questionRequest, question);
 
-            return ResponseEntity.ok().body(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(response + "\n" + answerList));
+            BeanUtils.copyProperties(response, questionResponse);
+            questionResponse.setAnswers(answerList);
+            return ResponseEntity.ok().body(questionResponse);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Cannot Create New Question: " + questionRequest);
         }
@@ -101,7 +103,7 @@ public class AdminService {
                 Question question = optionalQuestion.get();
                 answerRepository.deleteAll(answerRepository.findByQuestion(question));
                 question.setContent(questionRequest.getQuestionContent());
-                List<Answer> answerList = insertAnswer(questionRequest, question);
+                List<AnswerDto> answerList = insertAnswer(questionRequest, question);
                 return ResponseEntity.ok().body("update success.");
             } else {
                 return ResponseEntity.ok("Do not found the question");
@@ -113,7 +115,7 @@ public class AdminService {
 
     }
 
-    private List<Answer> insertAnswer(QuestionRequest questionRequest, Question question) {
+    private List<AnswerDto> insertAnswer(QuestionRequest questionRequest, Question question) {
         List<Answer> answerList = new ArrayList<>();
         questionRequest.getAnswers().forEach(answerDto -> {
             Answer answer = new Answer();
@@ -123,6 +125,6 @@ public class AdminService {
             answerList.add(answer);
         });
         answerRepository.saveAll(answerList);
-        return answerList;
+        return questionRequest.getAnswers();
     }
 }

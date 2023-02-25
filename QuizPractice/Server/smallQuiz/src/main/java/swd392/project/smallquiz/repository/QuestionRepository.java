@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     Optional<Question> findById(Long id);
 
+    List<Question> findByIdIn(List<Long> id);
+
     @Query(value = "select * from question where content like %:content%", nativeQuery = true)
     List<Question> findQuestionByContent(@Param(value = "content") String content);
     List<Question> findAllByDeleteFlag(boolean check);
