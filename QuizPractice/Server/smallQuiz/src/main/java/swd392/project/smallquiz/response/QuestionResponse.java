@@ -1,18 +1,14 @@
 package swd392.project.smallquiz.response;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import swd392.project.smallquiz.model.dto.AnswerDto;
+import swd392.project.smallquiz.model.entiity.Answer;
 import swd392.project.smallquiz.model.entiity.Question;
 
 import java.util.List;
-
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class QuestionResponse extends Question {
-    private List<AnswerDto> answers;
-
-
+     List<AnswerDto> answers;
 }
