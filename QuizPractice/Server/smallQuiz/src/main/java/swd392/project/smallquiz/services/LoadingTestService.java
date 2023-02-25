@@ -11,6 +11,7 @@ import swd392.project.smallquiz.repository.AnswerRepository;
 import swd392.project.smallquiz.repository.QuestionRepository;
 import swd392.project.smallquiz.response.QuestionResponse;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 @Service
@@ -28,18 +29,13 @@ public class LoadingTestService {
             map.put(i,questionList.get(i));
         }
         List<QuestionResponse> questionResponseList= new ArrayList<>();
-        if(questionList.size()>10) {
-            for (int i = 0; i < 10; i++) {
+           while (questionResponseList.size() < 10){
                 Random rd = new Random();
                 int number = rd.nextInt(questionList.size());
-                addListTest(map, questionResponseList, number);
+                if(map.get(number) != null) {
+                    addListTest(map, questionResponseList, number);
+                }
             }
-        }
-        else{
-            for (int i = 0; i < questionList.size(); i++) {
-                addListTest(map, questionResponseList, i);
-            }
-        }
         return questionResponseList;
     }
 
@@ -50,5 +46,6 @@ public class LoadingTestService {
         questionResponse.setAnswers(answerDtoList);
         BeanUtils.copyProperties(map.get(index), questionResponse);
         questionResponseList.add(questionResponse);
+        map.remove(index);
     }
 }
