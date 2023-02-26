@@ -5,7 +5,7 @@ export const DenyAcess = () => {
     const nagative = useNavigate()
     const handleBack = () => {
         localStorage.removeItem("token");
-        localStorage.removeItem("admin");
+        localStorage.removeItem("role");
         nagative("/");
       };
   return (
