@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import axiosInstance from "../api/axiosInstance";
 export default function List_question() {
   const [info, setInfo] = useState([]);
@@ -26,7 +27,7 @@ export default function List_question() {
     };
 
     try {
-      const res = await axiosInstance.put(
+      await axiosInstance.put(
         `/admin/update_question?questionId=${questionId}`,
         data
       );
@@ -44,7 +45,16 @@ export default function List_question() {
         })
       );
       
-      
+      toast.success('Update succesfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
       
     } catch (error) {
       console.error(error);
@@ -246,8 +256,9 @@ export default function List_question() {
               </div>
             </div>
           </div>
+          <ToastContainer />
         </div>
-
+        
 
       )}
       

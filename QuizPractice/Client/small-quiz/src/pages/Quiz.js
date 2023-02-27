@@ -59,6 +59,14 @@ const Quiz = () => {
     }
   };
 
+  const handlePreviuosQuestion = () => {
+    const previuosQuestion = currentQuestion - 1;
+    if (previuosQuestion === 0) {
+      setCurrentQuestion(previuosQuestion);
+      setTimeLeft(10);
+    } 
+  };
+
   return (
     <div className="quiz">
       {showScore ? (
@@ -126,16 +134,18 @@ const Quiz = () => {
                     )}
                   </div>
                   <div className="d-flex flex-row justify-content-between align-items-center p-3 bg-white">
-                    <button
+                    {currentQuestion >= 1 ?(<button
                       className="btn btn-primary d-flex align-items-center btn-danger"
                       type="button"
+                      onClick={handlePreviuosQuestion}
                     >
                       <i className="fa fa-angle-left mt-1 mr-1" />
-                      &nbsp;previous
-                    </button>
+                      &nbsp;Previous
+                    </button>) : ""}
                     <button
                       className="btn btn-primary border-success align-items-center btn-success"
                       type="button"
+                      onClick={handleNextQuestion}
                     >
                       Next
                       <i className="fa fa-angle-right ml-2" />
