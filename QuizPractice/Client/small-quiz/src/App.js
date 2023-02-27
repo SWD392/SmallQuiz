@@ -12,6 +12,7 @@ import { ProtectedAdminRoute } from "./ProtectedAdminRoute";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
+import Quiz from "./pages/Quiz";
 function App() {
 
   return (
@@ -25,6 +26,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/user" element={<HelloUser />} />
       <Route path="/deny" element={<DenyAcess />} />
+      <Route path="/quiz" element={<Quiz />} />
     </Routes>
   );
 }
