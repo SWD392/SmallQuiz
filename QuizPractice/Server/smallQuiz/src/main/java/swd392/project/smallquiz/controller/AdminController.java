@@ -3,6 +3,7 @@ package swd392.project.smallquiz.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import swd392.project.smallquiz.model.dto.AnswerDto;
 import swd392.project.smallquiz.request.QuestionRequest;
 import swd392.project.smallquiz.response.QuestionResponse;
 import swd392.project.smallquiz.services.AdminService;
@@ -33,8 +34,14 @@ public class AdminController {
         return adminService.createNewQuestion(questionRequest);
     }
 
+    @PostMapping("/create_answer")
+    public ResponseEntity<?> createAnswer(@RequestParam Long questionId, @RequestBody List<AnswerDto> answerDtos) {
+        return adminService.createAnswerByQuestionId(questionId, answerDtos);
+    }
+
     @PutMapping("/update_question")
     public ResponseEntity<?> updateQuestion(@RequestParam Long questionId, @RequestBody QuestionRequest questionRequest) {
         return adminService.updateQuestion(questionId, questionRequest);
     }
+
 }
