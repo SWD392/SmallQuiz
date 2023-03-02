@@ -93,6 +93,25 @@ public class AdminService {
         }
     }
 
+    @Transactional(rollbackOn = {Exception.class, Throwable.class})
+    public ResponseEntity<?> createAnswerByQuestionId(Long questionId, List<AnswerDto> answerDtos) {
+        try {
+            Question question = questionRepository.findById(questionId).orElseThrow(Exception::new);
+            List<Answer> answers = new ArrayList<>();
+            answerDtos.forEach(answerDto -> {
+                Answer answer = new Answer();
+                BeanUtils.copyProperties(answerDto, answer);
+                answer.setQuestion(question);
+                answer.setDeleteFlag(false);
+                answers.add(answer);
+            });
+
+            List<Answer> response = answerRepository.saveAll(answers);
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
     @Transactional(rollbackOn = {Exception.class, Throwable.class})
     public ResponseEntity<?> updateQuestion(Long questionId, QuestionRequest questionRequest) {
