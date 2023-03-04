@@ -44,4 +44,9 @@ public class AdminController {
         return adminService.updateQuestion(questionId, questionRequest);
     }
 
+    @PutMapping("/delete_question")
+    public ResponseEntity<?> deleteQuestion(@RequestParam Long questionId) {
+        return adminService.deleteQuestion(questionId);
+    }
+
 }
