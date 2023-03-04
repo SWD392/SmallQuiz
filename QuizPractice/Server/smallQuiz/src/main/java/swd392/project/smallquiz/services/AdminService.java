@@ -112,6 +112,25 @@ public class AdminService {
             return ResponseEntity.badRequest().build();
         }
     }
+    @Transactional(rollbackOn = {Exception.class, Throwable.class})
+    public ResponseEntity<?> deleteQuestion(Long questionId) {
+        try {
+            Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+            if (optionalQuestion.isPresent()) {
+                Question question = optionalQuestion.get();
+                answerRepository.findByQuestion(question)
+                        .forEach(answer -> answer.setDeleteFlag(Boolean.TRUE));
+                question.setDeleteFlag(Boolean.TRUE);
+
+                return ResponseEntity.ok().body("delete success.");
+            } else {
+                return ResponseEntity.ok("Do not found the question");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Fail to delete: " );
+        }
+    }
+
 
     @Transactional(rollbackOn = {Exception.class, Throwable.class})
     public ResponseEntity<?> updateQuestion(Long questionId, QuestionRequest questionRequest) {
