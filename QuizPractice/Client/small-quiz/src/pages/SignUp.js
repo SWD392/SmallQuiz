@@ -1,127 +1,216 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useFormik } from "formik";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+import "./signup.scss";
 const SignUp = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('');
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleSignUp = async (e) => {
-	e.preventDefault()
-	try {
-		const response = await axios.post('http://localhost:8081/register', {
-		  username,
-		  password,
-		  role,
-		});
-		const token = response.data.token;
-		localStorage.setItem('token', token);
-		toast("Register succesfully!");
-	  } catch (error) {
-		
-	  }
-  }
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      confirmPassword: "",
+      firstName: "",
+      lastName: "",
+      role: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .required("Required")
+        .matches(
+          /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+          "Please enter a valid email address"
+        ),
+      password: Yup.string()
+        .required("Required")
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+          "Password must be minimum eight characters, at least one letter and one number"
+        ),
+      confirmPassword: Yup.string()
+        .required("Required")
+        .oneOf([Yup.ref("password"), null], "Password must match"),
+      firstName: Yup.string()
+        .required("Required")
+        .matches(/^[a-zA-Z]{2,}$/, "First Name is not valid"),
+      lastName: Yup.string()
+        .required("Required")
+        .matches(/^[a-zA-Z]{2,}$/, "Last Name is not valid"),
+      role: Yup.string().required("Required"),
+    }),
+    onSubmit: async (values) => {
+      console.log(values.firstName);
+      try {
+        const response = await axios.post("http://localhost:8081/register", {
+          username: values.username,
+          password: values.password,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          role: values.role,
+        });
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+        toast("Register succesfully!");
+        navigate("/login");
+      } catch (error) {
+        toast.error('Register Unsuccesfully!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+      }
+    },
+  });
+
+  // const handleSignUp = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post("http://localhost:8081/register", {
+  //       username,
+  //       password,
+  //       role,
+  //     });
+  //     const token = response.data.token;
+  //     localStorage.setItem("token", token);
+  //     toast("Register succesfully!");
+  //   } catch (error) {}
+  // };
 
   return (
-    <div>
-      <div className="limiter">
-        <div
-          className="container-login100"
-          style={{ backgroundImage: 'url("images/bg-01.jpg")' }}
-        >
-          <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
-            <form className="login100-form validate-form" onSubmit={handleSignUp}>
-              <span className="login100-form-title p-b-49">Sign Up</span>
-
-              <div
-                className="wrap-input100 validate-input m-b-23"
-                data-validate="email is required"
-              >
-                <span className="label-input100">Email</span>
-                <input
-                  className="input100"
-                  type="text"
-                  name="email"
-				  value={username}
-                  placeholder="Type your username"
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-                <span className="focus-input100" data-symbol="" />
+    <div className="signup-container">
+      <div className="limiter" style={{ height: "100%" }}>
+        <div className="form_wrapper">
+          <div className="form_container">
+            <div className="title_container">
+              <h2> Registration </h2>
+            </div>
+            <div className="row clearfix">
+              <div className>
+                <form onSubmit={formik.handleSubmit}>
+                  <div className="input_field">
+                    <span>
+                      <i aria-hidden="true" className="fa fa-envelope" />
+                    </span>
+                    <input
+                      type="email"
+                      name="username"
+                      value={formik.values.username}
+                      onBlur={formik.handleBlur}
+                      onChange={formik.handleChange}
+                      placeholder="Email"
+                    />
+                  </div>
+                  {formik.touched.username && formik.errors.username ? (
+                    <p className="text-danger">{formik.errors.username}</p>
+                  ) : null}
+                  <div className="input_field">
+                    <span>
+                      <i aria-hidden="true" className="fa fa-lock" />
+                    </span>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formik.values.password}
+                      onBlur={formik.handleBlur}
+                      onChange={formik.handleChange}
+                      placeholder="Password"
+                    />
+                  </div>
+                  {formik.touched.password && formik.errors.password ? (
+                    <p className="text-danger">{formik.errors.password}</p>
+                  ) : null}
+                  <div className="input_field">
+                    <span>
+                      <i aria-hidden="true" className="fa fa-lock" />
+                    </span>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={formik.values.confirmPassword}
+                      onBlur={formik.handleBlur}
+                      onChange={formik.handleChange}
+                      placeholder="Re-type Password"
+                    />
+                  </div>
+                  {formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword ? (
+                    <p className="text-danger">
+                      {formik.errors.confirmPassword}
+                    </p>
+                  ) : null}
+                  <div className="row clearfix">
+                    <div className="col_half">
+                      <div className="input_field">
+                        <span>
+                          <i aria-hidden="true" className="fa fa-user" />
+                        </span>
+                        <input
+                          type="text"
+                          name="firstName"
+                          value={formik.values.firstName}
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          placeholder="First Name"
+                        />
+                      </div>
+                    </div>
+                    {formik.touched.firstName && formik.errors.firstName ? (
+                      <p className="text-danger">{formik.errors.firstName}</p>
+                    ) : null}
+                    <div className="col_half">
+                      <div className="input_field">
+                        <span>
+                          <i aria-hidden="true" className="fa fa-user" />
+                        </span>
+                        <input
+                          type="text"
+                          name="lastName"
+                          value={formik.values.lastName}
+                          onBlur={formik.handleBlur}
+                          onChange={formik.handleChange}
+                          placeholder="Last Name"
+                        />
+                      </div>
+                    </div>
+                    {formik.touched.lastName && formik.errors.lastName ? (
+                      <p className="text-danger">{formik.errors.lastName}</p>
+                    ) : null}
+                  </div>
+                  <div className="input_field select_option">
+                    <select
+                      name="role"
+                      value={formik.values.role}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option value="">Select a role</option>
+                      <option value="ROLE_USER">User</option>
+                      <option value="ROLE_ADMIN">Admin</option>
+                    </select>
+                    <div className="select_arrow" />
+                  </div>
+                  {formik.touched.role && formik.errors.role ? (
+                    <p className="text-danger">{formik.errors.role}</p>
+                  ) : null}
+                  <input
+                    className="button"
+                    type="submit"
+                    defaultValue="Register"
+                  />
+                </form>
               </div>
-              <div
-                className="wrap-input100 validate-input"
-                data-validate="Password is required"
-              >
-                <span className="label-input100">Password</span>
-                <input
-                  className="input100"
-                  type="password"
-				  value={password}
-                  name="password"
-                  placeholder="Type your password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <span className="focus-input100" data-symbol="" />
-              </div>
-              <div
-                className="wrap-input100 validate-input"
-                data-validate="Password is required"
-              >
-                <span className="label-input100">Password</span>
-                <input
-                  className="input100"
-                  type="password"
-				  value={confirmPassword}
-                  name="password"
-                  placeholder="Type your password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <span className="focus-input100" data-symbol="" />
-              </div>
-              <div
-                className="wrap-input100 validate-input"
-                data-validate="Password is required"
-              >
-                <span className="label-input100">Role</span>
-                <select
-                  id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  <option value="">Select a role</option>
-                  <option value="ROLE_USER">User</option>
-                  <option value="ROLE_ADMIN">Admin</option>
-                </select>
-                <span className="focus-input100" data-symbol="" />
-              </div>
-              <div
-                className="container-login100-form-btn"
-                style={{ paddingTop: "20px" }}
-              >
-                <div className="wrap-login100-form-btn">
-                  <div className="login100-form-bgbtn" />
-                  <button className="login100-form-btn">Sign Up</button>
-                </div>
-              </div>
-              <div className="txt1 text-center p-t-54 p-b-20">
-                <span>Or Sign Up Using</span>
-              </div>
-
-              {/* <div className="flex-col-c p-t-155">
-                <span className="txt1 p-b-17">Or Sign Up Using</span>
-                <a href="#" className="txt2">
-                  Sign Up
-                </a>
-              </div> */}
-            </form>
+            </div>
           </div>
         </div>
-		<ToastContainer />
       </div>
-      <div id="dropDownSelect1" />
     </div>
   );
 };

@@ -1,40 +1,40 @@
 import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import * as Yup from "yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useFormik } from "formik";
 const Login = () => {
-  const nagative = useNavigate();
+  const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().required("Required").matches(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/, "Please enter a valid email address"),
+      password: Yup.string().required("Required").matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, "Password must be minimum eight characters, at least one letter and one number"),
+    }),
+    onSubmit: (values) => {
+      axios
+        .post("http://localhost:8081/authenticate", {
+          username: values.email,
+          password: values.password,
+        })
+        .then((response) => {
+          const token = response.data.jwttoken;
+          const role = response.data.role;
+          localStorage.setItem("token", token);
+          localStorage.setItem("role", role);
+          // Redirect to dashboard or any page
+          navigate("/home");
+          toast("Login sucessfully!");
+        });
+    },
+  });
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = {
-      username: email,
-      password: password,
-    };
-    axios.post("http://localhost:8081/authenticate", data).then((response) => {
-      const token = response.data.jwttoken;
-      const role = response.data.role
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", role);
-      // Redirect to dashboard or any page
-	  nagative("/home")
-	  toast("Wow so easy!");
-    });
-  };
-
- 
   return (
     <div>
       <div className="limiter">
@@ -45,10 +45,9 @@ const Login = () => {
           <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
             <form
               className="login100-form validate-form"
-              onSubmit={handleSubmit}
+              onSubmit={formik.handleSubmit}
             >
               <span className="login100-form-title p-b-49">Login</span>
-
 
               <div
                 className="wrap-input100 validate-input m-b-23"
@@ -60,10 +59,15 @@ const Login = () => {
                   type="text"
                   name="email"
                   placeholder="Type your username"
-                  onChange={handleEmailChange}
+                  value={formik.values.email}
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
                 />
                 <span className="focus-input100" data-symbol="" />
               </div>
+              {formik.touched.email && formik.errors.email ? (
+                    <p className="text-danger">{formik.errors.email}</p>
+              ): null}
               <div
                 className="wrap-input100 validate-input"
                 data-validate="Password is required"
@@ -74,10 +78,15 @@ const Login = () => {
                   type="password"
                   name="password"
                   placeholder="Type your password"
-                  onChange={handlePasswordChange}
+                  value={formik.values.password}
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
                 />
                 <span className="focus-input100" data-symbol="" />
               </div>
+              {formik.touched.password && formik.errors.password ? (
+                    <p className="text-danger">{formik.errors.password}</p>
+              ): null}
               <div className="text-right p-t-8 p-b-31">
                 <a href="#">Forgot password?</a>
               </div>
@@ -88,18 +97,20 @@ const Login = () => {
                 </div>
               </div>
               <div className="txt1 text-center p-t-54 p-b-20">
-                <span>Or Sign Up Using</span>
-              </div>
-              <div className="flex-c-m">
-                <a href="#" className="login100-social-item bg1">
-                  <i className="fa fa-facebook" />
-                </a>
-                <a href="#" className="login100-social-item bg2">
-                  <i className="fa fa-twitter" />
-                </a>
-                <a href="#" className="login100-social-item bg3">
-                  <i className="fa fa-google" />
-                </a>
+                <span>
+                  Or{" "}
+                  <Link
+                    style={{
+                      textDecoration: "none",
+                      fontWeight: "bold",
+                      color: "#333",
+                    }}
+                    to="/signup"
+                  >
+                    Sign up
+                  </Link>{" "}
+                  Using
+                </span>
               </div>
               {/* <div className="flex-col-c p-t-155">
                 <span className="txt1 p-b-17">Or Sign Up Using</span>
@@ -108,11 +119,10 @@ const Login = () => {
                 </a>
               </div> */}
             </form>
-			
-
           </div>
         </div>
       </div>
+      <ToastContainer />
       <div id="dropDownSelect1" />
     </div>
   );

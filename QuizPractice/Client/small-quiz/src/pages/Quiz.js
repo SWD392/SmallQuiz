@@ -1,31 +1,32 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import "./quiz.css";
+import "./quiz.scss";
+import { ShowScore } from "./ShowScore";
 const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
   const [questions, setQuestions] = useState([]);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setTimeLeft(timeLeft - 1);
+  //   }, 1000);
 
-    if (timeLeft === 0) {
-      const nextQuestion = currentQuestion + 1;
-      if (nextQuestion < questions.length) {
-        setCurrentQuestion(nextQuestion);
-        setTimeLeft(10);
-      } else {
-        setShowScore(true);
-      }
-    }
+  //   if (timeLeft === 0) {
+  //     const nextQuestion = currentQuestion + 1;
+  //     if (nextQuestion < questions.length) {
+  //       setCurrentQuestion(nextQuestion);
+  //       setTimeLeft(10);
+  //     } else {
+  //       setShowScore(true);
+  //     }
+  //   }
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [timeLeft]);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [timeLeft]);
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -59,20 +60,18 @@ const Quiz = () => {
     }
   };
 
-  const handlePreviuosQuestion = () => {
-    const previuosQuestion = currentQuestion - 1;
-    if (previuosQuestion === 0) {
-      setCurrentQuestion(previuosQuestion);
+  const handlePrevious = () => {
+    const previous = currentQuestion - 1;
+    if (previous > -1) {
+      setCurrentQuestion(previous);
       setTimeLeft(10);
-    } 
+    }
   };
 
   return (
     <div className="quiz">
       {showScore ? (
-        <div className="score-section">
-          You scored {score} out of {questions.length}
-        </div>
+        <ShowScore score={score} questions={questions} />
       ) : (
         <>
           {/* <div className="timer-section">Time left: {timeLeft}s</div>
@@ -116,32 +115,37 @@ const Quiz = () => {
                         {questions[currentQuestion]?.content}
                       </h5>
                     </div>
-
-                    {questions[currentQuestion]?.answers.map(
-                      (option, index) => (
-                        <div className="ans ml-2">
-                          <label className="radio" style={{width: "80%"}}>
-                            <button
-                              style={{width: "80%", display: "flex"}}
-                              key={index}
-                              onClick={() => handleAnswerOptionClick(index)}
-                            >
-                              <span style={{width: "80%"}}>{option.content}</span>
-                            </button>
-                          </label>
-                        </div>
-                      )
-                    )}
+                    <div className="row">
+                      {questions[currentQuestion]?.answers.map(
+                        (option, index) => (
+                          <div key={index} className="col-md-6">
+                            <label className="radio w-100 mt-3">
+                              <button                               
+                                key={index}
+                                onClick={() => handleAnswerOptionClick(index)}
+                                className="w-100"
+                              >
+                                <span className="w-100">{option.content}</span>
+                              </button>
+                            </label>
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
                   <div className="d-flex flex-row justify-content-between align-items-center p-3 bg-white">
-                    {currentQuestion >= 1 ?(<button
-                      className="btn btn-primary d-flex align-items-center btn-danger"
-                      type="button"
-                      onClick={handlePreviuosQuestion}
-                    >
-                      <i className="fa fa-angle-left mt-1 mr-1" />
-                      &nbsp;Previous
-                    </button>) : ""}
+                    {currentQuestion >= 1 ? (
+                      <button
+                        className="btn btn-primary d-flex align-items-center btn-danger"
+                        type="button"
+                        onClick={handlePrevious}
+                      >
+                        <i className="fa fa-angle-left mt-1 mr-1" />
+                        &nbsp;Previous
+                      </button>
+                    ) : (
+                      ""
+                    )}
                     <button
                       className="btn btn-primary border-success align-items-center btn-success"
                       type="button"
