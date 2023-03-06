@@ -97,7 +97,7 @@ const Quiz = () => {
             <button onClick={handleNextQuestion}>Next</button>
           </div> */}
           <div className="container mt-5">
-            <div className="d-flex justify-content-center row">
+            <div className="d-flex justify-content-center align-items-center row">
               <div className="col-md-10 col-lg-10">
                 <div className="border">
                   <div className="question bg-white p-3 border-bottom">
@@ -110,7 +110,7 @@ const Quiz = () => {
                   </div>
                   <div className="question bg-white p-3 border-bottom">
                     <div className="d-flex flex-row align-items-center question-title">
-                      <h3 className="text-danger">Q.{currentQuestion + 1}</h3>
+                      <h3 className="text-danger">Q.{currentQuestion + 1}, </h3>
                       <h5 className="mt-1 ml-2">
                         {questions[currentQuestion]?.content}
                       </h5>
@@ -123,7 +123,7 @@ const Quiz = () => {
                               <button                               
                                 key={index}
                                 onClick={() => handleAnswerOptionClick(index)}
-                                className="w-100"
+                                className="w-100 quiz-button"
                               >
                                 <span className="w-100">{option.content}</span>
                               </button>

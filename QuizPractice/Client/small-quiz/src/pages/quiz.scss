@@ -21,8 +21,7 @@ label.radio span {
   color: #111;
   width: 100px;
   text-align: left;
-  border-radius: 3px;
-  margin-top: 7px;
+  border-radius: 5px;
 }
 
 label.radio input:checked + span {
@@ -43,4 +42,14 @@ label.radio input:checked + span {
 .btn:active {
   outline: 0 !important;
   box-shadow: none !important;
+}
+
+.quiz-button:hover{
+  background-color: aqua;
+  span{
+    color: red;
+    font-weight: bold;
+    transition: all 0.1s ease;
+  }
+  transition: all 0.1s ease;
 }
