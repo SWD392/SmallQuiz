@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -33,7 +34,9 @@ public class AdminService {
     public List<QuestionResponse> findAllQuestion() {
         List<QuestionResponse> questionResponses = new ArrayList<>();
 
-        List<Question> questions = questionRepository.findAll();
+        List<Question> questions = questionRepository.findAll().stream()
+                .filter(question -> !question.getDeleteFlag())
+                .collect(Collectors.toList());
 
         for (Question question : questions) {
             List<AnswerDto> answerDtos = new ArrayList<>();
@@ -112,6 +115,7 @@ public class AdminService {
             return ResponseEntity.badRequest().build();
         }
     }
+
     @Transactional(rollbackOn = {Exception.class, Throwable.class})
     public ResponseEntity<?> deleteQuestion(Long questionId) {
         try {
@@ -127,7 +131,7 @@ public class AdminService {
                 return ResponseEntity.ok("Do not found the question");
             }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Fail to delete: " );
+            return ResponseEntity.badRequest().body("Fail to delete: ");
         }
     }
 
