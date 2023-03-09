@@ -17,6 +17,7 @@ export default function List_question() {
   const [answer3, setAnswer3] = useState("");
   const [answer4, setAnswer4] = useState("");
   const [questions, setQuestions] = useState("");
+  const [inputText, setInputText] = useState("");
   const handleEdit = (question) => {
     setSelectedQuestion(question);
     setIsPopupOpen(true);
@@ -29,9 +30,8 @@ export default function List_question() {
         `/admin/delete_question?questionId=${questionId}`
       );
       console.log(res.data);
-        
 
-      toast.success('Delete successfully', {
+      toast.success("Delete successfully", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -40,9 +40,9 @@ export default function List_question() {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
 
-        window.location.reload()
+      window.location.reload();
     }
   };
 
@@ -143,7 +143,6 @@ export default function List_question() {
     };
     fetchData();
   }, [token]);
-  
 
   function formatDate(newDate) {
     const months = {
@@ -168,20 +167,39 @@ export default function List_question() {
     return formatted.toString();
   }
 
-  console.log(info);
+  let inputHandler = (e) => {
+    //convert input text to lower case
+    var lowerCase = e.target.value.toLowerCase();
+    setInputText(lowerCase);
+  };
+
+  const filteredData = info.filter((el) => {
+    //if no input the return the original
+    if (inputText === "") {
+      return el;
+    }
+    //return the item which contains the user input
+    else {
+      return el.content && el.content.toLowerCase().includes(inputText);
+    }
+  });
   //Pagination
   const itemsPerPage = 10;
-  const [itemOffset, setItemOffset] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);  
 
   const endOffset = itemOffset + itemsPerPage;
-  const currentItems = info.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(info.length / itemsPerPage);
+  const currentItems = filteredData.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(filteredData.length / itemsPerPage);
 
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % info.length;
+    const newOffset = (event.selected * itemsPerPage) % filteredData.length;
     setItemOffset(newOffset);
   };
-  const navigate = useNavigate()
+
+
+
+  
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
@@ -189,6 +207,37 @@ export default function List_question() {
   return (
     <>
       <Navbar handleLogout={handleLogout} />
+      <div className="row d-flex justify-content-center mt-2">
+        <div className="col-lg-8 col-md-6 col-sm-12 p-0">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="form-control"
+            onChange={inputHandler}
+            id="search"
+            name="search"
+          />
+        </div>
+        <div className="col-lg-1 col-md-3 col-sm-12 p-0">
+          <button type="submit" className="btn btn-base">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="feather feather-search"
+            >
+              <circle cx={11} cy={11} r={8} />
+              <line x1={21} y1={21} x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+        </div>
+      </div>
       <div className="main-content">
         <div className="container mt-7">
           <div className="row mt-2">
@@ -218,7 +267,6 @@ export default function List_question() {
                           Content
                         </th>
                         <th scope="col">Create Date</th>
-                        <th scope="col">Update Date</th>
                         <th scope="col" className="text-center">
                           Action
                         </th>
@@ -228,9 +276,8 @@ export default function List_question() {
                       {currentItems.map((item) => (
                         <tr key={item.id}>
                           <td>{item.id}</td>
-                          <td style={{ width: "65%" }}>{item.content}</td>
+                          <td style={{ width: "77%" }}>{item.content}</td>
                           <td>{formatDate(item.createdDate)}</td>
-                          <td></td>
                           <td>
                             <button
                               type="button"
