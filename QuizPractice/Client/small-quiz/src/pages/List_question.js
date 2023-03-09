@@ -17,11 +17,35 @@ export default function List_question() {
   const [answer3, setAnswer3] = useState("");
   const [answer4, setAnswer4] = useState("");
   const [questions, setQuestions] = useState("");
-  const [index, setIndex] = useState(0);
   const handleEdit = (question) => {
     setSelectedQuestion(question);
     setIsPopupOpen(true);
   };
+
+  const handleDelete = async (questionId) => {
+    let text = "Do you want to delete this question?";
+    if (window.confirm(text) === true) {
+      const res = await axiosInstance.put(
+        `/admin/delete_question?questionId=${questionId}`
+      );
+      console.log(res.data);
+        
+
+      toast.success('Delete successfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+
+        window.location.reload()
+    }
+  };
+
   const handleCreate = () => {
     setopopupCreate(true);
   };
@@ -50,10 +74,7 @@ export default function List_question() {
     };
 
     try {
-       await axiosInstance.post(
-        `/admin/create_question`,
-        dataCreate
-      );
+      await axiosInstance.post(`/admin/create_question`, dataCreate);
     } catch (error) {
       console.error(error);
     }
@@ -122,15 +143,32 @@ export default function List_question() {
     };
     fetchData();
   }, [token]);
-  const nagative = useNavigate();
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("admin");
-    nagative("/list_question");
-  };
+  
 
-  console.log(answer);
+  function formatDate(newDate) {
+    const months = {
+      0: "January",
+      1: "February",
+      2: "March",
+      3: "April",
+      4: "May",
+      5: "June",
+      6: "July",
+      7: "August",
+      8: "September",
+      9: "October",
+      10: "November",
+      11: "December",
+    };
+    const d = new Date();
+    const year = d.getFullYear();
+    const date = d.getDate();
+    const monthName = d.getMonth();
+    const formatted = `${date}-${monthName}-${year}`;
+    return formatted.toString();
+  }
 
+  console.log(info);
   //Pagination
   const itemsPerPage = 10;
   const [itemOffset, setItemOffset] = useState(0);
@@ -143,10 +181,14 @@ export default function List_question() {
     const newOffset = (event.selected * itemsPerPage) % info.length;
     setItemOffset(newOffset);
   };
-
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+  };
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar handleLogout={handleLogout} />
       <div className="main-content">
         <div className="container mt-7">
           <div className="row mt-2">
@@ -165,24 +207,38 @@ export default function List_question() {
                   </button>
                 </div>
                 <div className="table-responsive">
-                  <table style={{margin: '0'}} className="table align-items-center table-flush">
+                  <table
+                    style={{ margin: "0" }}
+                    className="table align-items-center table-flush"
+                  >
                     <thead className="thead-light">
-                      <tr>
+                      <tr className="text-left">
                         <th scope="col">ID</th>
-                        <th scope="col">Content</th>
+                        <th scope="col" className="text-left">
+                          Content
+                        </th>
                         <th scope="col">Create Date</th>
                         <th scope="col">Update Date</th>
-                        <th scope="col">Edit</th>
+                        <th scope="col" className="text-center">
+                          Action
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {currentItems.map((item) => (
                         <tr key={item.id}>
                           <td>{item.id}</td>
-                          <td>{item.content}</td>
-                          <td>{item.createDate}</td>
+                          <td style={{ width: "65%" }}>{item.content}</td>
+                          <td>{formatDate(item.createdDate)}</td>
                           <td></td>
                           <td>
+                            <button
+                              type="button"
+                              className="btn btn-danger btn mr-2"
+                              onClick={() => handleDelete(item.id)}
+                            >
+                              Delete
+                            </button>
                             <button
                               type="button"
                               className="btn btn-info btn"
@@ -422,7 +478,6 @@ export default function List_question() {
                       <select
                         name="correct-answer"
                         id="correct-answer"
-                        value={selectedQuestion.answers[index].content}
                         className="form-control"
                       >
                         {selectedQuestion.answers.map((answer, index) => (

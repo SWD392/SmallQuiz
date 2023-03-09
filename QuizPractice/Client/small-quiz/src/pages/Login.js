@@ -29,12 +29,15 @@ const Login = () => {
           localStorage.setItem("token", token);
           localStorage.setItem("role", role);
           // Redirect to dashboard or any page
-          navigate("/home");
-          toast("Login sucessfully!");
+          if(role === 'ROLE_ADMIN'){
+            navigate('/list_question')
+          }else{
+            navigate('/home')
+          }
         });
     },
   });
-
+  
   return (
     <div>
       <div className="limiter">

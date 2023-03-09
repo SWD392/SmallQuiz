@@ -118,7 +118,7 @@ const Quiz = () => {
                     <div className="row">
                       {questions[currentQuestion]?.answers.map(
                         (option, index) => (
-                          <div key={index} className="col-md-6">
+                          <div key={index} className="col-md-12">
                             <label className="radio w-100 mt-3">
                               <button                               
                                 key={index}
