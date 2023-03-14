@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import swd392.project.smallquiz.model.dto.AnswerDto;
+import swd392.project.smallquiz.model.entiity.UserAnswer;
 import swd392.project.smallquiz.request.QuestionRequest;
 import swd392.project.smallquiz.response.QuestionResponse;
 import swd392.project.smallquiz.services.AdminService;
@@ -29,6 +30,11 @@ public class AdminController {
         return adminService.findQuestionByContent(content);
     }
 
+    @GetMapping("/user-answers/{testId}")
+    public List<UserAnswer> getUserAnswersByTestId(@PathVariable Long testId) {
+        return adminService.FindUserAnswersByTestId(testId);
+    }
+
     @PostMapping("/create_question")
     public ResponseEntity<?> createQuestion(@RequestBody QuestionRequest questionRequest) {
         return adminService.createNewQuestion(questionRequest);
@@ -48,5 +54,7 @@ public class AdminController {
     public ResponseEntity<?> deleteQuestion(@RequestParam Long questionId) {
         return adminService.deleteQuestion(questionId);
     }
+
+
 
 }

@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import swd392.project.smallquiz.model.dto.AnswerDto;
 import swd392.project.smallquiz.model.entiity.Answer;
 import swd392.project.smallquiz.model.entiity.Question;
+import swd392.project.smallquiz.model.entiity.UserAnswer;
 import swd392.project.smallquiz.repository.AnswerRepository;
 import swd392.project.smallquiz.repository.QuestionRepository;
+import swd392.project.smallquiz.repository.TestRepository;
+import swd392.project.smallquiz.repository.UserAnswerRepository;
 import swd392.project.smallquiz.request.QuestionRequest;
 import swd392.project.smallquiz.response.QuestionResponse;
 
@@ -30,6 +33,11 @@ public class AdminService {
 
     @Autowired
     private AnswerRepository answerRepository;
+
+    private TestRepository testRepository;
+
+    @Autowired
+    private UserAnswerRepository userAnswerRepository;
 
     public List<QuestionResponse> findAllQuestion() {
         List<QuestionResponse> questionResponses = new ArrayList<>();
@@ -74,6 +82,10 @@ public class AdminService {
             questionResponses.add(questionResponse);
         });
         return questionResponses;
+    }
+
+    public List<UserAnswer> FindUserAnswersByTestId(Long testId) {
+        return userAnswerRepository.findByTestId(testId);
     }
 
     @Transactional(rollbackOn = {Exception.class, Throwable.class})
