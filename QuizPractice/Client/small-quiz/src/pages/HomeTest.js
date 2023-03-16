@@ -1,5 +1,6 @@
 import React from 'react'
 import { Navbar } from './Navbar'
+import { Link, useNavigate } from 'react-router-dom'
 export default function HomeTest() {
   return (
     <>
@@ -13,11 +14,11 @@ export default function HomeTest() {
             <div className="row gx-5 justify-content-center">
               <div className="col-lg-6">
                 <div className="text-center my-5">
-                  <h1 className="display-5 fw-bolder text-white mb-2">Present your business in a whole new way</h1>
-                  <p className="lead text-white-50 mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit!</p>
+                  <h1 className="display-5 fw-bolder text-black mb-2">Quickly find or create anything in your curriculum</h1>
+                  <p className="lead text-black-50 mb-4">Motivate every student to mastery with easy-to-customize content combined with tools for inclusive assessment, instruction, and practice.</p>
                   <div className="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                    <a className="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Get Started</a>
-                    <a className="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
+                    <a  to  className="btn btn-primary btn-lg px-4 me-sm-3" href="/Login">Get Started  </a> 
+                   
                   </div>
                 </div>
               </div>
@@ -30,28 +31,25 @@ export default function HomeTest() {
             <div className="row gx-5">
               <div className="col-lg-4 mb-5 mb-lg-0">
                 <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i className="bi bi-collection" /></div>
-                <h2 className="h4 fw-bolder">Featured title</h2>
-                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                <h2 className="h4 fw-bolder">About Me</h2>
+                <p> How does sampling gets accomplished with a sensing strip being used for image acquisition?</p>
                 <a className="text-decoration-none" href="#!">
-                  Call to action
                   <i className="bi bi-arrow-right" />
                 </a>
               </div>
               <div className="col-lg-4 mb-5 mb-lg-0">
                 <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i className="bi bi-building" /></div>
-                <h2 className="h4 fw-bolder">Featured title</h2>
-                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                <h2 className="h4 fw-bolder">About Me</h2>
+                <p>By the end of this project, you will be ready to use Quizizz with your students to create gamified quizzes, polls, and lessons. Whether you are teaching online or in the classroom, Quizizz allows you to gather valuable assessment data while your students are actively engaged in a friendly competitive game. Throughout each task, we will set up your Quizizz account and learn how to create your own quizzes as well as use the reporting feature to see how your students are progressing. Engage your students as they learn through Quizizz!.</p>
                 <a className="text-decoration-none" href="#!">
-                  Call to action
                   <i className="bi bi-arrow-right" />
                 </a>
               </div>
               <div className="col-lg-4">
                 <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i className="bi bi-toggles2" /></div>
-                <h2 className="h4 fw-bolder">Featured title</h2>
-                <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                <h2 className="h4 fw-bolder">About Me</h2>
+                <p>free education & learning platform, for the global community of students and working professionals, where they can practice 1 million+ multiple choice questions & answers (MCQs), tutorials, programs & algorithms in engineering, programming, science, and school subjects. Scroll down for the list of popular topics or search below..</p>
                 <a className="text-decoration-none" href="#!">
-                  Call to action
                   <i className="bi bi-arrow-right" />
                 </a>
               </div>
@@ -59,161 +57,7 @@ export default function HomeTest() {
           </div>
         </section>
         {/* Pricing section*/}
-        <section className="bg-light py-5 border-bottom">
-          <div className="container px-5 my-5">
-            <div className="text-center mb-5">
-              <h2 className="fw-bolder">Pay as you grow</h2>
-              <p className="lead mb-0">With our no hassle pricing plans</p>
-            </div>
-            <div className="row gx-5 justify-content-center">
-              {/* Pricing card free*/}
-              <div className="col-lg-6 col-xl-4">
-                <div className="card mb-5 mb-xl-0">
-                  <div className="card-body p-5">
-                    <div className="small text-uppercase fw-bold text-muted">Free</div>
-                    <div className="mb-3">
-                      <span className="display-4 fw-bold">$0</span>
-                      <span className="text-muted">/ mo.</span>
-                    </div>
-                    <ul className="list-unstyled mb-4">
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        <strong>1 users</strong>
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        5GB storage
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Unlimited public projects
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Community access
-                      </li>
-                      <li className="mb-2 text-muted">
-                        <i className="bi bi-x" />
-                        Unlimited private projects
-                      </li>
-                      <li className="mb-2 text-muted">
-                        <i className="bi bi-x" />
-                        Dedicated support
-                      </li>
-                      <li className="mb-2 text-muted">
-                        <i className="bi bi-x" />
-                        Free linked domain
-                      </li>
-                      <li className="text-muted">
-                        <i className="bi bi-x" />
-                        Monthly status reports
-                      </li>
-                    </ul>
-                    <div className="d-grid"><a className="btn btn-outline-primary" href="#!">Choose plan</a></div>
-                  </div>
-                </div>
-              </div>
-              {/* Pricing card pro*/}
-              <div className="col-lg-6 col-xl-4">
-                <div className="card mb-5 mb-xl-0">
-                  <div className="card-body p-5">
-                    <div className="small text-uppercase fw-bold">
-                      <i className="bi bi-star-fill text-warning" />
-                      Pro
-                    </div>
-                    <div className="mb-3">
-                      <span className="display-4 fw-bold">$9</span>
-                      <span className="text-muted">/ mo.</span>
-                    </div>
-                    <ul className="list-unstyled mb-4">
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        <strong>5 users</strong>
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        5GB storage
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Unlimited public projects
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Community access
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Unlimited private projects
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Dedicated support
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Free linked domain
-                      </li>
-                      <li className="text-muted">
-                        <i className="bi bi-x" />
-                        Monthly status reports
-                      </li>
-                    </ul>
-                    <div className="d-grid"><a className="btn btn-primary" href="#!">Choose plan</a></div>
-                  </div>
-                </div>
-              </div>
-              {/* Pricing card enterprise*/}
-              <div className="col-lg-6 col-xl-4">
-                <div className="card">
-                  <div className="card-body p-5">
-                    <div className="small text-uppercase fw-bold text-muted">Enterprise</div>
-                    <div className="mb-3">
-                      <span className="display-4 fw-bold">$49</span>
-                      <span className="text-muted">/ mo.</span>
-                    </div>
-                    <ul className="list-unstyled mb-4">
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        <strong>Unlimited users</strong>
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        5GB storage
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Unlimited public projects
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Community access
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Unlimited private projects
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        Dedicated support
-                      </li>
-                      <li className="mb-2">
-                        <i className="bi bi-check text-primary" />
-                        <strong>Unlimited</strong>
-                        linked domains
-                      </li>
-                      <li className="text-muted">
-                        <i className="bi bi-check text-primary" />
-                        Monthly status reports
-                      </li>
-                    </ul>
-                    <div className="d-grid"><a className="btn btn-outline-primary" href="#!">Choose plan</a></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+    
         {/* Testimonials section*/}
         <section className="py-5 border-bottom">
           <div className="container px-5 my-5 px-5">
@@ -257,7 +101,7 @@ export default function HomeTest() {
             <div className="text-center mb-5">
               <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i className="bi bi-envelope" /></div>
               <h2 className="fw-bolder">Get in touch</h2>
-              <p className="lead mb-0">We'd love to hear from you</p>
+              <p className="lead mb-0">We love you</p>
             </div>
             <div className="row gx-5 justify-content-center">
               <div className="col-lg-6">
@@ -268,66 +112,15 @@ export default function HomeTest() {
                 {/* To make this form functional, sign up at*/}
                 {/* https://startbootstrap.com/solution/contact-forms*/}
                 {/* to get an API token!*/}
-                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-                  {/* Name input*/}
-                  <div className="form-floating mb-3">
-                    <input className="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                    <label htmlFor="name">Full name</label>
-                    <div className="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
-                  </div>
-                  {/* Email address input*/}
-                  <div className="form-floating mb-3">
-                    <input className="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                    <label htmlFor="email">Email address</label>
-                    <div className="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                    <div className="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
-                  </div>
-                  {/* Phone number input*/}
-                  <div className="form-floating mb-3">
-                    <input className="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                    <label htmlFor="phone">Phone number</label>
-                    <div className="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
-                  </div>
-                  {/* Message input*/}
-                  <div className="form-floating mb-3">
-                    <textarea className="form-control" id="message" type="text" placeholder="Enter your message here..." style={{ height: '10rem' }} data-sb-validations="required" defaultValue={""} />
-                    <label htmlFor="message">Message</label>
-                    <div className="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
-                  </div>
-                  {/* Submit success message*/}
-                  {/**/}
-                  {/* This is what your users will see when the form*/}
-                  {/* has successfully submitted*/}
-                  <div className="d-none" id="submitSuccessMessage">
-                    <div className="text-center mb-3">
-                      <div className="fw-bolder">Form submission successful!</div>
-                      To activate this form, sign up at
-                      <br />
-                      <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                    </div>
-                  </div>
-                  {/* Submit error message*/}
-                  {/**/}
-                  {/* This is what your users will see when there is*/}
-                  {/* an error submitting the form*/}
-                  <div className="d-none" id="submitErrorMessage"><div className="text-center text-danger mb-3">Error sending message!</div></div>
-                  {/* Submit Button*/}
-                  <div className="d-grid"><button className="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
-                </form>
+               
               </div>
             </div>
           </div>
         </section>
         {/* Footer*/}
         <footer className="py-5 bg-dark">
-          <div className="container px-5"><p className="m-0 text-center text-white">Copyright © Your Website 2022</p></div>
+          <div className="container px-5"><p className="m-0 text-center text-white">SMALL QUÍZ</p></div>
         </footer>
-        {/* Bootstrap core JS*/}
-        {/* Core theme JS*/}
-        {/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/}
-        {/* * *                               SB Forms JS                               * **/}
-        {/* * * Activate your form at https://startbootstrap.com/solution/contact-forms * **/}
-        {/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/}
       </div>
 
     </>

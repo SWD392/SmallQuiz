@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
+import "./menu.css";
 export const Navbar = ({handleLogout}) => {
 
   return (
@@ -11,7 +11,9 @@ export const Navbar = ({handleLogout}) => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
           <li className="nav-item"><Link to='/home' className="nav-link" aria-current="page" href="#!">Home</Link></li>
-          <li className="nav-item"><Link to='/login' className="nav-link" onClick={handleLogout}>Log out</Link></li>
+          <li className="nav-item"><Link to='/quiz' className="nav-link" aria-current="page" href="#!">Take Quiz</Link></li>
+          <li className="nav-item"><Link to='/' className="nav-link" aria-current="page" href="#!">View Quiz</Link></li>
+          <li className="nav-item"><Link to='/login' className="nav-link" onClick={handleLogout}>LogIn</Link></li>
         </ul>
       </div>
     </div>
