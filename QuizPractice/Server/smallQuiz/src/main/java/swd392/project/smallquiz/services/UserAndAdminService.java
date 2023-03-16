@@ -22,4 +22,9 @@ public class UserAndAdminService {
         UserAccountDto userAccountDto= userMapper.convertUserAcc(userAccount);
         return userAccountDto;
     }
+        public Long getUserAndAdminId(String username) {;
+        UserAccount userAccount = userAccountRepository.findByUserName(username);
+        UserAccountDto userAccountDto= userMapper.convertUserAcc(userAccount);
+        return userAccountDto.getUserId();
+    }
 }

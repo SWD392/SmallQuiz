@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import swd392.project.smallquiz.model.dto.RoleDto;
+import swd392.project.smallquiz.model.dto.UserAccountDto;
 import swd392.project.smallquiz.request.JwtRequest;
 import swd392.project.smallquiz.request.UserRequest;
 import swd392.project.smallquiz.response.JwtResponse;
@@ -15,10 +16,13 @@ import swd392.project.smallquiz.security.JwtTokenUtil;
 import swd392.project.smallquiz.services.AuthenticateService;
 import swd392.project.smallquiz.services.GettingRoleService;
 import swd392.project.smallquiz.services.JwtUserDetailsService;
+import swd392.project.smallquiz.services.UserAndAdminService;
 
 @RestController
 @CrossOrigin
 public class JwtAuthenController {
+    @Autowired
+    UserAndAdminService userAndAdminService;
     @Autowired
     GettingRoleService gettingRoleService;
     @Autowired
@@ -40,7 +44,8 @@ public class JwtAuthenController {
                 .loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
         RoleDto role=gettingRoleService.getGettingRole(authenticationRequest.getUsername());
-        return ResponseEntity.ok(new JwtResponse(token,role.getRoleName()));
+        Long userId = userAndAdminService.getUserAndAdminId(authenticationRequest.getUsername());
+        return ResponseEntity.ok(new JwtResponse(token,role.getRoleName(),userId));
     }
 
     private void authenticate(String username, String password) throws Exception {
