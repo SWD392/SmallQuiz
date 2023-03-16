@@ -17,7 +17,7 @@ export default function HomeTest() {
                   <h1 className="display-5 fw-bolder text-black mb-2">Quickly find or create anything in your curriculum</h1>
                   <p className="lead text-black-50 mb-4">Motivate every student to mastery with easy-to-customize content combined with tools for inclusive assessment, instruction, and practice.</p>
                   <div className="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                    <a  to  className="btn btn-primary btn-lg px-4 me-sm-3" href="/Login">Get Started  </a> 
+                    <a  to  className="btn btn-primary btn-lg px-4 me-sm-3" href="/quiz">Get Started  </a> 
                    
                   </div>
                 </div>
