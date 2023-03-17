@@ -6,6 +6,7 @@ export const DenyAcess = () => {
     const handleBack = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("role");
+        localStorage.removeItem("userid");
         nagative("/");
       };
   return (

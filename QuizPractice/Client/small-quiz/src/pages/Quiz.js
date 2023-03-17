@@ -8,6 +8,9 @@ const Quiz = () => {
   const [showScore, setShowScore] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
   const [questions, setQuestions] = useState([]);
+  const [questionId, setQuestionId] = useState([]);
+  const [selectedAnswer, setSelectedAnswer] = useState([]);
+
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     setTimeLeft(timeLeft - 1);
@@ -42,12 +45,15 @@ const Quiz = () => {
 
   const handleAnswerOptionClick = (index) => {
     const nextQuestion = currentQuestion + 1;
-    if (questions[currentQuestion]?.answers[index]?.status === true) {
-      setScore(score + 1);
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setCurrentQuestion(nextQuestion);
-    }
+    setScore(score + 1);
+    setCurrentQuestion(nextQuestion);
+    setQuestionId([...questionId, questions[currentQuestion]?.id]);
+    setSelectedAnswer(
+      [
+        ...selectedAnswer,
+        questions[currentQuestion]?.answers[index]?.id,
+      ]
+    );
   };
 
   const handleNextQuestion = () => {
@@ -65,13 +71,26 @@ const Quiz = () => {
     if (previous > -1) {
       setCurrentQuestion(previous);
       setTimeLeft(10);
+      const newQuestionIds = [...questionId];
+      newQuestionIds.splice(previous, 1); 
+      setQuestionId(newQuestionIds);
+      const newAnswerIds = [...selectedAnswer];
+      newAnswerIds.splice(previous, 1); 
+      setSelectedAnswer(newAnswerIds);
     }
   };
 
+  console.log(questionId);
+  console.log(selectedAnswer);
   return (
     <div className="quiz">
       {showScore ? (
-        <ShowScore score={score} questions={questions} />
+        <ShowScore
+          questionId={questionId}
+          selectedAnswer={selectedAnswer}
+          score={score}
+          questions={questions}
+        />
       ) : (
         <>
           {/* <div className="timer-section">Time left: {timeLeft}s</div>
@@ -120,7 +139,7 @@ const Quiz = () => {
                         (option, index) => (
                           <div key={index} className="col-md-12">
                             <label className="radio w-100 mt-3">
-                              <button                               
+                              <button
                                 key={index}
                                 onClick={() => handleAnswerOptionClick(index)}
                                 className="w-100 quiz-button"

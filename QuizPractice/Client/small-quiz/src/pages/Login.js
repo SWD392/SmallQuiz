@@ -26,8 +26,10 @@ const Login = () => {
         .then((response) => {
           const token = response.data.jwttoken;
           const role = response.data.role;
+          const userid = response.data.userId;
           localStorage.setItem("token", token);
           localStorage.setItem("role", role);
+          localStorage.setItem("userid", userid);
           // Redirect to dashboard or any page
           if(role === 'ROLE_ADMIN'){
             navigate('/list_question')

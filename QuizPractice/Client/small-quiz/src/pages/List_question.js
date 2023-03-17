@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import axiosInstance from "../api/axiosInstance";
 import { Navbar } from "./Navbar";
@@ -145,20 +144,6 @@ export default function List_question() {
   }, [token]);
 
   function formatDate(newDate) {
-    const months = {
-      0: "January",
-      1: "February",
-      2: "March",
-      3: "April",
-      4: "May",
-      5: "June",
-      6: "July",
-      7: "August",
-      8: "September",
-      9: "October",
-      10: "November",
-      11: "December",
-    };
     const d = new Date();
     const year = d.getFullYear();
     const date = d.getDate();
@@ -203,6 +188,7 @@ export default function List_question() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("userid");
   };
   return (
     <>

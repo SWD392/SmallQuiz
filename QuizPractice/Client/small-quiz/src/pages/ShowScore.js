@@ -1,7 +1,27 @@
+
 import React from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import axiosInstance from "../api/axiosInstance";
 import './score.scss'
 export const ShowScore = (props) => {
+  const userid = localStorage.getItem("userid");
+  useEffect(() => {
+    const fetchQuestion = async () => {
+      const data = props.questionId.map((qid, index) => ({
+        questionId: qid,
+        userAnswerId: props.selectedAnswer[index]
+      }));
+      try {
+        axiosInstance.post(`http://localhost:8081/getResult?userId=${userid}`, data).then((response) => {
+          console.log(response.data);
+        });
+      } catch (error) {}
+    };
+
+    fetchQuestion();
+  }, []);
+
   return (
     <div className="contain">
       <div className="congrats">
