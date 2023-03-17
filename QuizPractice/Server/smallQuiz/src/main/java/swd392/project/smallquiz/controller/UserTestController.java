@@ -2,6 +2,7 @@ package swd392.project.smallquiz.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import swd392.project.smallquiz.model.dto.TestDto;
 import swd392.project.smallquiz.request.UserAnswerRequest;
 import swd392.project.smallquiz.response.QuestionResponse;
 import swd392.project.smallquiz.services.LoadingTestService;
@@ -24,4 +25,10 @@ public class UserTestController {
                                                @RequestBody List<UserAnswerRequest> userAnswerRequest) {
         return loadingTestService.getUserTestAnswer(userId, userAnswerRequest);
     }
+
+    @GetMapping("getTest")
+    public List<TestDto> getTestListByUserId(@RequestParam Long userId) {
+        return loadingTestService.getByUserId(userId);
+    }
+
 }
