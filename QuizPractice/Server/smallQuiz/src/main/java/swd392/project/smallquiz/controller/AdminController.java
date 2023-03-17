@@ -7,6 +7,7 @@ import swd392.project.smallquiz.model.dto.AnswerDto;
 import swd392.project.smallquiz.model.entiity.UserAnswer;
 import swd392.project.smallquiz.request.QuestionRequest;
 import swd392.project.smallquiz.response.QuestionResponse;
+import swd392.project.smallquiz.response.UserTestResponse;
 import swd392.project.smallquiz.services.AdminService;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class AdminController {
     }
 
     @GetMapping("/user-answers/{testId}")
-    public List<UserAnswer> getUserAnswersByTestId(@PathVariable Long testId) {
+    public List<UserTestResponse> getUserAnswersByTestId(@PathVariable Long testId) {
         return adminService.FindUserAnswersByTestId(testId);
     }
 
