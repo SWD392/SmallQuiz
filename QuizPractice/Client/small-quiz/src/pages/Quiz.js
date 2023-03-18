@@ -45,15 +45,17 @@ const Quiz = () => {
 
   const handleAnswerOptionClick = (index) => {
     const nextQuestion = currentQuestion + 1;
-    setScore(score + 1);
-    setCurrentQuestion(nextQuestion);
-    setQuestionId([...questionId, questions[currentQuestion]?.id]);
-    setSelectedAnswer(
-      [
+    if (questions[currentQuestion].answers[index]?.status === 1) {
+      setScore(score + 1);
+      setCurrentQuestion(nextQuestion);
+      setQuestionId([...questionId, questions[currentQuestion]?.id]);
+      setSelectedAnswer([
         ...selectedAnswer,
         questions[currentQuestion]?.answers[index]?.id,
-      ]
-    );
+      ]);
+    }else{
+      setCurrentQuestion(nextQuestion);
+    }
   };
 
   const handleNextQuestion = () => {
@@ -72,10 +74,10 @@ const Quiz = () => {
       setCurrentQuestion(previous);
       setTimeLeft(10);
       const newQuestionIds = [...questionId];
-      newQuestionIds.splice(previous, 1); 
+      newQuestionIds.splice(previous, 1);
       setQuestionId(newQuestionIds);
       const newAnswerIds = [...selectedAnswer];
-      newAnswerIds.splice(previous, 1); 
+      newAnswerIds.splice(previous, 1);
       setSelectedAnswer(newAnswerIds);
     }
   };

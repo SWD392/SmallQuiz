@@ -11,7 +11,7 @@ export const Navbar = ({handleLogout}) => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
           <li className="nav-item"><Link to='/home' className="nav-link" aria-current="page" href="#!">Home</Link></li>
-             <li className="nav-item"><Link to='/' className="nav-link" aria-current="page" href="#!">View History</Link></li>
+             <li className="nav-item"><Link to='/viewusertest' className="nav-link" aria-current="page" href="#!">View History</Link></li>
              <li className="nav-item dropdown">
   <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     LogIn

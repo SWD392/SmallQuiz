@@ -204,7 +204,7 @@ export default function List_question() {
             name="search"
           />
         </div>
-        <div className="col-lg-1 col-md-3 col-sm-12 p-0">
+        {/* <div className="col-lg-1 col-md-3 col-sm-12 p-0">
           <button type="submit" className="btn btn-base">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -222,7 +222,7 @@ export default function List_question() {
               <line x1={21} y1={21} x2="16.65" y2="16.65" />
             </svg>
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="main-content">
         <div className="container mt-7">
@@ -241,7 +241,7 @@ export default function List_question() {
                     Create new Question
                   </button>
                 </div>
-                <div className="table-responsive">
+                <div style={{ margin: "0" }} className="table-responsive">
                   <table
                     style={{ margin: "0" }}
                     className="table align-items-center table-flush"
@@ -253,7 +253,7 @@ export default function List_question() {
                           Content
                         </th>
                         <th scope="col">Create Date</th>
-                        <th scope="col" className="text-center">
+                        <th scope="col" style={{ marginLeft: "30px" }}>
                           Action
                         </th>
                       </tr>
@@ -262,9 +262,9 @@ export default function List_question() {
                       {currentItems.map((item) => (
                         <tr key={item.id}>
                           <td>{item.id}</td>
-                          <td style={{ width: "77%" }}>{item.content}</td>
+                          <td style={{ width: "60%" }}>{item.content}</td>
                           <td>{formatDate(item.createdDate)}</td>
-                          <td>
+                          <td style={{ width: "16%" }}>
                             <button
                               type="button"
                               className="btn btn-danger btn mr-2"

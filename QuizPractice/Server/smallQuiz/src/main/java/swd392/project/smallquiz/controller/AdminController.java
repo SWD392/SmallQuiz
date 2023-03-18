@@ -31,10 +31,7 @@ public class AdminController {
         return adminService.findQuestionByContent(content);
     }
 
-    @GetMapping("/user-answers/{testId}")
-    public List<UserTestResponse> getUserAnswersByTestId(@PathVariable Long testId) {
-        return adminService.FindUserAnswersByTestId(testId);
-    }
+
 
     @PostMapping("/create_question")
     public ResponseEntity<?> createQuestion(@RequestBody QuestionRequest questionRequest) {
