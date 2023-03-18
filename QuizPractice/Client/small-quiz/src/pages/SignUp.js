@@ -192,8 +192,8 @@ const SignUp = () => {
                       onBlur={formik.handleBlur}
                     >
                       <option value="">Select a role</option>
-                      <option value="ROLE_USER">User</option>
-                      <option value="ROLE_ADMIN">Admin</option>
+                      <option value="ROLE_USER">Student</option>
+                      <option value="ROLE_ADMIN">Teacher</option>
                     </select>
                     <div className="select_arrow" />
                   </div>

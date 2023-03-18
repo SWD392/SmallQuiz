@@ -17,6 +17,7 @@ export default function List_question() {
   const [answer4, setAnswer4] = useState("");
   const [questions, setQuestions] = useState("");
   const [inputText, setInputText] = useState("");
+
   const handleEdit = (question) => {
     setSelectedQuestion(question);
     setIsPopupOpen(true);
@@ -30,6 +31,15 @@ export default function List_question() {
       );
       console.log(res.data);
 
+      
+      const index = info.findIndex(
+        (question) => question.id === questionId
+      );
+      
+      info.splice(index, 1);
+      
+      setInfo([...info]);
+
       toast.success("Delete successfully", {
         position: "top-right",
         autoClose: 5000,
@@ -40,8 +50,6 @@ export default function List_question() {
         progress: undefined,
         theme: "light",
       });
-
-      window.location.reload();
     }
   };
 
@@ -78,6 +86,26 @@ export default function List_question() {
       console.error(error);
     }
   };
+  
+
+  const handleAnswerChange = (e) => {
+    const setIndex = e.target.options.selectedIndex;
+    console.log(setIndex);
+    setSelectedQuestion((prev) => {
+      const updatedAnswers = prev.answers.map((answer, index) => {
+        return {
+          ...answer,
+          status: index === setIndex,
+        };
+      });
+  
+      return {
+        ...prev,
+        answers: updatedAnswers,
+      };
+    });
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -123,11 +151,14 @@ export default function List_question() {
         draggable: true,
         progress: undefined,
         theme: "light",
+        toastId: "delete"
       });
     } catch (error) {
       console.error(error);
     }
   };
+
+  console.log(info);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -170,7 +201,7 @@ export default function List_question() {
   });
   //Pagination
   const itemsPerPage = 10;
-  const [itemOffset, setItemOffset] = useState(0);  
+  const [itemOffset, setItemOffset] = useState(0);
 
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = filteredData.slice(itemOffset, endOffset);
@@ -181,15 +212,13 @@ export default function List_question() {
     setItemOffset(newOffset);
   };
 
-
-
-  
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("userid");
   };
+
+  console.log(selectedQuestion);
   return (
     <>
       <Navbar handleLogout={handleLogout} />
@@ -511,12 +540,13 @@ export default function List_question() {
                       <select
                         name="correct-answer"
                         id="correct-answer"
+                        value={selectedQuestion.answers.findIndex(answer => answer.status)}
+                        onChange={handleAnswerChange}
                         className="form-control"
                       >
                         {selectedQuestion.answers.map((answer, index) => (
                           <option
-                            setIndex={index}
-                            value={answer.status}
+                            value={index}
                             key={index}
                           >
                             {answer.content}
