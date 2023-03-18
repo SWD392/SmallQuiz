@@ -72,10 +72,14 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
         return false;
     }
-    public boolean checkUsernameAndPassword(String username, String password){
-        String passwordOld=userAccountRepository.findByUserName(username).getPassword();
-        if(passwordEncode.passwordEncoder().matches(password,passwordOld)){
-            return true;
+    public boolean checkUsernameAndPassword(String username, String password) {
+        try {
+            String passwordOld = userAccountRepository.findByUserName(username).getPassword();
+            if (passwordEncode.passwordEncoder().matches(password, passwordOld)) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Wrong username");
         }
         return false;
     }
