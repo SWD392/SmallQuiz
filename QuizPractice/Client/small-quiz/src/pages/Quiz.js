@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import "./quiz.scss";
 import { ShowScore } from "./ShowScore";
 const Quiz = () => {
@@ -45,15 +46,17 @@ const Quiz = () => {
 
   const handleAnswerOptionClick = (index) => {
     const nextQuestion = currentQuestion + 1;
-    setScore(score + 1);
-    setCurrentQuestion(nextQuestion);
-    setQuestionId([...questionId, questions[currentQuestion]?.id]);
-    setSelectedAnswer(
-      [
+    if (questions[currentQuestion].answers[index]?.status === 1) {
+      setScore(score + 1);
+      setCurrentQuestion(nextQuestion);
+      setQuestionId([...questionId, questions[currentQuestion]?.id]);
+      setSelectedAnswer([
         ...selectedAnswer,
         questions[currentQuestion]?.answers[index]?.id,
-      ]
-    );
+      ]);
+    }else{
+      setCurrentQuestion(nextQuestion);
+    }
   };
 
   const handleNextQuestion = () => {
@@ -72,10 +75,10 @@ const Quiz = () => {
       setCurrentQuestion(previous);
       setTimeLeft(10);
       const newQuestionIds = [...questionId];
-      newQuestionIds.splice(previous, 1); 
+      newQuestionIds.splice(previous, 1);
       setQuestionId(newQuestionIds);
       const newAnswerIds = [...selectedAnswer];
-      newAnswerIds.splice(previous, 1); 
+      newAnswerIds.splice(previous, 1);
       setSelectedAnswer(newAnswerIds);
     }
   };
@@ -83,6 +86,12 @@ const Quiz = () => {
   console.log(questionId);
   console.log(selectedAnswer);
   return (
+    <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Quiz</title>
+        <link rel="canonical" href="http://mysite.com/example" />
+  </Helmet>
     <div className="quiz">
       {showScore ? (
         <ShowScore
@@ -181,6 +190,7 @@ const Quiz = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 

@@ -1,11 +1,19 @@
 import axios from "axios";
 import { useFormik } from "formik";
 import React from "react";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import "./signup.scss";
 const SignUp = () => {
+
+  <Helmet>
+        <meta charSet="utf-8" />
+        <title>Sign Up</title>
+        <link rel="canonical" href="http://mysite.com/example" />
+  </Helmet>
+
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -192,8 +200,8 @@ const SignUp = () => {
                       onBlur={formik.handleBlur}
                     >
                       <option value="">Select a role</option>
-                      <option value="ROLE_USER">User</option>
-                      <option value="ROLE_ADMIN">Admin</option>
+                      <option value="ROLE_USER">Student</option>
+                      <option value="ROLE_ADMIN">Teacher</option>
                     </select>
                     <div className="select_arrow" />
                   </div>

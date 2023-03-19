@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import swd392.project.smallquiz.mapper.AnswerMapper;
 import swd392.project.smallquiz.model.dto.AnswerDto;
+import swd392.project.smallquiz.model.dto.TestDto;
 import swd392.project.smallquiz.model.entiity.*;
 import swd392.project.smallquiz.repository.*;
 import swd392.project.smallquiz.request.UserAnswerRequest;
@@ -34,27 +35,28 @@ public class LoadingTestService {
 
     @Autowired
     UserAccountRepository userAccountRepository;
-    public List<QuestionResponse> loadTest(){
-        List<Question> questionList= questionRepository.findAllByDeleteFlag(false);
-        Map<Integer,Question> map= new HashMap<>();
-        for(int i=0;i<questionList.size();i++){
-            map.put(i,questionList.get(i));
+
+    public List<QuestionResponse> loadTest() {
+        List<Question> questionList = questionRepository.findAllByDeleteFlag(false);
+        Map<Integer, Question> map = new HashMap<>();
+        for (int i = 0; i < questionList.size(); i++) {
+            map.put(i, questionList.get(i));
         }
-        List<QuestionResponse> questionResponseList= new ArrayList<>();
-           while (questionResponseList.size() < 10){
-                Random rd = new Random();
-                int number = rd.nextInt(questionList.size());
-                if(map.get(number) != null) {
-                    addListTest(map, questionResponseList, number);
-                }
+        List<QuestionResponse> questionResponseList = new ArrayList<>();
+        while (questionResponseList.size() < 10) {
+            Random rd = new Random();
+            int number = rd.nextInt(questionList.size());
+            if (map.get(number) != null) {
+                addListTest(map, questionResponseList, number);
             }
+        }
         return questionResponseList;
     }
 
     private void addListTest(Map<Integer, Question> map, List<QuestionResponse> questionResponseList, int index) {
         List<Answer> answerList = answerRepository.findByQuestion(map.get(index));
-        List<AnswerDto> answerDtoList= answerMapper.convertAnswer(answerList);
-        QuestionResponse questionResponse= new QuestionResponse();
+        List<AnswerDto> answerDtoList = answerMapper.convertAnswer(answerList);
+        QuestionResponse questionResponse = new QuestionResponse();
         questionResponse.setAnswers(answerDtoList);
         BeanUtils.copyProperties(map.get(index), questionResponse);
         questionResponseList.add(questionResponse);
@@ -106,6 +108,23 @@ public class LoadingTestService {
 
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    public List<TestDto> getByUserId(Long userId) {
+        try {
+            UserAccount userAccount = userAccountRepository.findById(userId)
+                    .orElseThrow(Exception::new);
+            List<TestDto> tests = new ArrayList<>();
+            testRepository.findByUserAccount(userAccount).forEach(test -> {
+                TestDto testDto = new TestDto();
+                BeanUtils.copyProperties(test, testDto);
+                testDto.setCreatedDate(test.getCreate_date());
+                tests.add(testDto);
+            });
+            return tests;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

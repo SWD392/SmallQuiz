@@ -15,6 +15,7 @@ import swd392.project.smallquiz.repository.TestRepository;
 import swd392.project.smallquiz.repository.UserAnswerRepository;
 import swd392.project.smallquiz.request.QuestionRequest;
 import swd392.project.smallquiz.response.QuestionResponse;
+import swd392.project.smallquiz.response.UserTestResponse;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
@@ -84,8 +85,29 @@ public class AdminService {
         return questionResponses;
     }
 
-    public List<UserAnswer> FindUserAnswersByTestId(Long testId) {
-        return userAnswerRepository.findByTestId(testId);
+    public List<UserTestResponse> FindUserAnswersByTestId(Long testId) {
+
+        List<UserAnswer> testQuestions = userAnswerRepository.findByTestId(testId);
+
+        List<UserTestResponse> userTestResponses = new ArrayList<>();
+
+        testQuestions.forEach(test -> {
+            UserTestResponse testResponse = new UserTestResponse();
+            testResponse.setTestId(test.getId());
+            testResponse.setQuestion(test.getQuestion());
+            AnswerDto userAnswerDto = new AnswerDto();
+            BeanUtils.copyProperties(test.getAnswer(), userAnswerDto);
+            testResponse.setUserAnswer(userAnswerDto);
+            List<AnswerDto> answerDtos = new ArrayList<>();
+            answerRepository.findByQuestion(test.getQuestion()).forEach(answer -> {
+                AnswerDto answerDto = new AnswerDto();
+                BeanUtils.copyProperties(answer, answerDto);
+                answerDtos.add(answerDto);
+            });
+            testResponse.setAnswers(answerDtos);
+            userTestResponses.add(testResponse);
+        });
+        return userTestResponses;
     }
 
     @Transactional(rollbackOn = {Exception.class, Throwable.class})

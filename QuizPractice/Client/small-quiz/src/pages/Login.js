@@ -30,6 +30,7 @@ const Login = () => {
           localStorage.setItem("token", token);
           localStorage.setItem("role", role);
           localStorage.setItem("userid", userid);
+          console.log(response.data);
           // Redirect to dashboard or any page
           if(role === 'ROLE_ADMIN'){
             navigate('/list_question')

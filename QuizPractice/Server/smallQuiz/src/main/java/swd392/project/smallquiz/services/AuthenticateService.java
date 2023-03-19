@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 public class AuthenticateService implements AuthenticationManager {
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
-        String username = auth.getName();
-        String password = auth.getCredentials().toString();
-        return new UsernamePasswordAuthenticationToken(username, password,auth.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(),auth.getAuthorities());
     }
 }

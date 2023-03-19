@@ -4,6 +4,8 @@ import { toast, ToastContainer } from "react-toastify";
 import axiosInstance from "../api/axiosInstance";
 import { Navbar } from "./Navbar";
 import "./list_question.scss";
+import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 export default function List_question() {
   const [info, setInfo] = useState([]);
   const token = localStorage.getItem("token");
@@ -17,6 +19,7 @@ export default function List_question() {
   const [answer4, setAnswer4] = useState("");
   const [questions, setQuestions] = useState("");
   const [inputText, setInputText] = useState("");
+  const nagative = useNavigate()
   const handleEdit = (question) => {
     setSelectedQuestion(question);
     setIsPopupOpen(true);
@@ -30,6 +33,15 @@ export default function List_question() {
       );
       console.log(res.data);
 
+      
+      const index = info.findIndex(
+        (question) => question.id === questionId
+      );
+      
+      info.splice(index, 1);
+      
+      setInfo([...info]);
+
       toast.success("Delete successfully", {
         position: "top-right",
         autoClose: 5000,
@@ -40,8 +52,6 @@ export default function List_question() {
         progress: undefined,
         theme: "light",
       });
-
-      window.location.reload();
     }
   };
 
@@ -78,6 +88,26 @@ export default function List_question() {
       console.error(error);
     }
   };
+  
+
+  const handleAnswerChange = (e) => {
+    const setIndex = e.target.options.selectedIndex;
+    console.log(setIndex);
+    setSelectedQuestion((prev) => {
+      const updatedAnswers = prev.answers.map((answer, index) => {
+        return {
+          ...answer,
+          status: index === setIndex,
+        };
+      });
+  
+      return {
+        ...prev,
+        answers: updatedAnswers,
+      };
+    });
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -123,11 +153,14 @@ export default function List_question() {
         draggable: true,
         progress: undefined,
         theme: "light",
+        toastId: "delete"
       });
     } catch (error) {
       console.error(error);
     }
   };
+
+  console.log(info);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -170,7 +203,7 @@ export default function List_question() {
   });
   //Pagination
   const itemsPerPage = 10;
-  const [itemOffset, setItemOffset] = useState(0);  
+  const [itemOffset, setItemOffset] = useState(0);
 
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = filteredData.slice(itemOffset, endOffset);
@@ -181,17 +214,21 @@ export default function List_question() {
     setItemOffset(newOffset);
   };
 
-
-
-  
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("userid");
+    nagative("/");
   };
+
+  console.log(selectedQuestion);
   return (
     <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>List Question</title>
+        <link rel="canonical" href="http://mysite.com/example" />
+  </Helmet>
       <Navbar handleLogout={handleLogout} />
       <div className="row d-flex justify-content-center mt-2">
         <div className="col-lg-8 col-md-6 col-sm-12 p-0">
@@ -204,7 +241,7 @@ export default function List_question() {
             name="search"
           />
         </div>
-        <div className="col-lg-1 col-md-3 col-sm-12 p-0">
+        {/* <div className="col-lg-1 col-md-3 col-sm-12 p-0">
           <button type="submit" className="btn btn-base">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -222,7 +259,7 @@ export default function List_question() {
               <line x1={21} y1={21} x2="16.65" y2="16.65" />
             </svg>
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="main-content">
         <div className="container mt-7">
@@ -241,7 +278,7 @@ export default function List_question() {
                     Create new Question
                   </button>
                 </div>
-                <div className="table-responsive">
+                <div style={{ margin: "0" }} className="table-responsive">
                   <table
                     style={{ margin: "0" }}
                     className="table align-items-center table-flush"
@@ -253,7 +290,7 @@ export default function List_question() {
                           Content
                         </th>
                         <th scope="col">Create Date</th>
-                        <th scope="col" className="text-center">
+                        <th scope="col" style={{ marginLeft: "30px" }}>
                           Action
                         </th>
                       </tr>
@@ -262,9 +299,9 @@ export default function List_question() {
                       {currentItems.map((item) => (
                         <tr key={item.id}>
                           <td>{item.id}</td>
-                          <td style={{ width: "77%" }}>{item.content}</td>
+                          <td style={{ width: "60%" }}>{item.content}</td>
                           <td>{formatDate(item.createdDate)}</td>
-                          <td>
+                          <td style={{ width: "16%" }}>
                             <button
                               type="button"
                               className="btn btn-danger btn mr-2"
@@ -511,12 +548,13 @@ export default function List_question() {
                       <select
                         name="correct-answer"
                         id="correct-answer"
+                        value={selectedQuestion.answers.findIndex(answer => answer.status)}
+                        onChange={handleAnswerChange}
                         className="form-control"
                       >
                         {selectedQuestion.answers.map((answer, index) => (
                           <option
-                            setIndex={index}
-                            value={answer.status}
+                            value={index}
                             key={index}
                           >
                             {answer.content}

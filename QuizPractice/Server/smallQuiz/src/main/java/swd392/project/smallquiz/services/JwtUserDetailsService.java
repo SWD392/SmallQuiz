@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import swd392.project.smallquiz.model.entiity.Role;
 import swd392.project.smallquiz.model.entiity.UserAccount;
@@ -63,7 +64,25 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
         return  false;
     }
-
+    public boolean changPassword(String username,String oldPassword,String newPassword){
+        if(checkUsernameAndPassword(username,oldPassword)){
+            newPassword=passwordEncode.passwordEncoder().encode(newPassword);
+            userAccountRepository.updatePassword(newPassword,username);
+            return true;
+        }
+        return false;
+    }
+    public boolean checkUsernameAndPassword(String username, String password) {
+        try {
+            String passwordOld = userAccountRepository.findByUserName(username).getPassword();
+            if (passwordEncode.passwordEncoder().matches(password, passwordOld)) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Wrong username");
+        }
+        return false;
+    }
     public boolean saveNewUserGroup(UserAccount userAccount, Role role) {
         if (!userGroupRespository.existsByUserAccount(userAccount)) {
             UserGroup newUserGroup = new UserGroup();

@@ -1,10 +1,18 @@
 
 import React from "react";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import './score.scss'
 export const ShowScore = (props) => {
+
+  <Helmet>
+        <meta charSet="utf-8" />
+        <title>Show Score</title>
+        <link rel="canonical" href="http://mysite.com/example" />
+  </Helmet>
+
   const userid = localStorage.getItem("userid");
   useEffect(() => {
     const fetchQuestion = async () => {
