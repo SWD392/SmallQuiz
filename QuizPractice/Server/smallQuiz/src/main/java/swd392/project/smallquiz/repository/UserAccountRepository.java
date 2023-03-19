@@ -16,6 +16,7 @@ import java.util.List;
 public interface UserAccountRepository extends JpaRepository<UserAccount,Long> {
     boolean existsByUserName(String userName);
     UserAccount findByUserName(String userName);
+    UserAccount findByUserId(Long userId);
     @Transactional
     @Modifying
     @Query(value = "UPDATE user_account SET password = :password where user_name = :username", nativeQuery = true)

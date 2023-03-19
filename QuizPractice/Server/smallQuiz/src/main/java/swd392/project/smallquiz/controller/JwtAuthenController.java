@@ -39,7 +39,7 @@ public class JwtAuthenController {
     }
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
     public boolean changPassword(@RequestBody UpdatePassword updatePassword) throws Exception {
-        return userDetailsService.changPassword(updatePassword.getUserName(),updatePassword.getOldPassword(),updatePassword.getNewPassword());
+        return userDetailsService.changPassword(updatePassword.getUserId(),updatePassword.getOldPassword(),updatePassword.getNewPassword());
     }
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
