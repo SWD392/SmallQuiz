@@ -64,11 +64,16 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
         return  false;
     }
-    public boolean changPassword(String username,String oldPassword,String newPassword){
-        if(checkUsernameAndPassword(username,oldPassword)){
-            newPassword=passwordEncode.passwordEncoder().encode(newPassword);
-            userAccountRepository.updatePassword(newPassword,username);
-            return true;
+    public boolean changPassword(Long userId,String oldPassword,String newPassword){
+        try {
+            String username = userAccountRepository.findByUserId(userId).getUserName();
+            if(checkUsernameAndPassword(username,oldPassword)){
+                newPassword=passwordEncode.passwordEncoder().encode(newPassword);
+                userAccountRepository.updatePassword(newPassword,username);
+                return true;
+            }
+        }catch (Exception e) {
+            System.out.println("userID is not found");
         }
         return false;
     }

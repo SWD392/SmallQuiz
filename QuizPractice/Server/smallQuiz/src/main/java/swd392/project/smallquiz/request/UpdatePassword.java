@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UpdatePassword {
-    private String userName;
+    private Long userId;
     private String oldPassword;
     private String newPassword;
 }
