@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import "./quiz.scss";
 import { ShowScore } from "./ShowScore";
 const Quiz = () => {
@@ -85,6 +86,12 @@ const Quiz = () => {
   console.log(questionId);
   console.log(selectedAnswer);
   return (
+    <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Quiz</title>
+        <link rel="canonical" href="http://mysite.com/example" />
+  </Helmet>
     <div className="quiz">
       {showScore ? (
         <ShowScore
@@ -183,6 +190,7 @@ const Quiz = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 

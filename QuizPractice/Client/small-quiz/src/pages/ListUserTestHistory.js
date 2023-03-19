@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import "./listUserTestHistory.scss";
@@ -37,6 +38,11 @@ export const ListUserTestHistory = () => {
 
   return (
     <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Test History</title>
+        <link rel="canonical" href="http://mysite.com/example" />
+  </Helmet>
     <Navbar />
       <div className="container-xl">
         <div className="table-responsive">
