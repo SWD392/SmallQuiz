@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import ChangePassword from "./pages/ChangePassword";
 import { DenyAcess } from "./pages/DenyAcess";
 import { HelloUser } from "./pages/HelloUser";
 import HomeTest from "./pages/HomeTest";
@@ -27,6 +28,7 @@ function App() {
       <Route path="/deny" element={<DenyAcess />} />
       <Route path="/quiz" element={<Quiz />} />
       <Route path="/useranswer/:testId" element={<UserAnswer />} />
+      <Route path="/changepassword" element={<ChangePassword />} />
     </Routes>
   );
 }

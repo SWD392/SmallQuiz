@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
-  const [username, setUsername] = useState("");
+
+  const navigate = useNavigate()
+
+  const userid = localStorage.getItem("userid")
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,13 +22,12 @@ const ChangePassword = () => {
 
     axios
       .post("http://localhost:8081/changePassword", {
-        username: username,
-        currentPassword: currentPassword,
+        userId: userid,
+        oldPassword: currentPassword,
         newPassword: newPassword,
       })
       .then((response) => {
         setMessage(response.data.message);
-        setUsername("");
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
@@ -32,21 +35,14 @@ const ChangePassword = () => {
       .catch((error) => {
         setMessage(error.response.data.message);
       });
+
+      navigate("/")
   };
 
   return (
     <div>
       <h2>Change Password</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </div>
         <div>
           <label htmlFor="current-password">Current Password:</label>
           <input

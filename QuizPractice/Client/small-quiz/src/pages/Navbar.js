@@ -1,27 +1,35 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./menu.css";
 import jwt_decode from "jwt-decode";
-export const Navbar = ({ handleLogout }) => {
+import { getInfoUser } from "../service/requestAPI";
+export const Navbar = () => {
+
+  const nagative = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("userid");
+    nagative("/");
+  };
+
   const token = localStorage.getItem("token");
   const [info, setInfo] = useState("")
 
   const decode = token ? jwt_decode(token) : null;
   useEffect(() => {
     const fetchInfo = async () => {
-      const data = {
-        username: decode.sub,
-      }
-      try {
-        axios.post("http://localhost:8081/info",data).then((response) => {
-          setInfo(response.data);
-        });
-      } catch (error) {}
+      const username = decode.sub;
+      const infoData = await getInfoUser(username);
+      setInfo(infoData);
     };
 
     fetchInfo();
   }, []);
+
+  console.log(info);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -64,7 +72,7 @@ export const Navbar = ({ handleLogout }) => {
                 Login
               </Link>
             </li>
-              ) : (            <li className="nav-item dropdown">
+              ) : (<li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
                 href="/"
@@ -77,12 +85,12 @@ export const Navbar = ({ handleLogout }) => {
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <Link to="/change-password" className="dropdown-item">
+                  <Link to="/changepassword" className="dropdown-item">
                     Change Password
                   </Link>
                 </li>
                 <li>
-                  <Link to="//viewusertest" className="dropdown-item">
+                  <Link to="/viewusertest" className="dropdown-item">
                   View Test History
                   </Link>
                 </li>

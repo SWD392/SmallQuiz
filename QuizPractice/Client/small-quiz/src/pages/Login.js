@@ -5,42 +5,55 @@ import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useFormik } from "formik";
+import { useState } from "react";
 const Login = () => {
   const navigate = useNavigate();
-
+  const [error, setError] = useState("");
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Required").matches(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/, "Please enter a valid email address"),
-      password: Yup.string().required("Required").matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, "Password must be minimum eight characters, at least one letter and one number"),
+      email: Yup.string()
+        .required("Required")
+        .matches(
+          /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+          "Please enter a valid email address"
+        ),
+      password: Yup.string()
+        .required("Required")
+        .matches(
+          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+          "Password must be minimum eight characters, at least one letter and one number"
+        ),
     }),
-    onSubmit: (values) => {
-      axios
-        .post("http://localhost:8081/authenticate", {
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post("http://localhost:8081/authenticate", {
           username: values.email,
           password: values.password,
-        })
-        .then((response) => {
-          const token = response.data.jwttoken;
-          const role = response.data.role;
-          const userid = response.data.userId;
-          localStorage.setItem("token", token);
-          localStorage.setItem("role", role);
-          localStorage.setItem("userid", userid);
-          console.log(response.data);
-          // Redirect to dashboard or any page
-          if(role === 'ROLE_ADMIN'){
-            navigate('/list_question')
-          }else{
-            navigate('/home')
-          }
         });
+        const token = response.data.jwttoken;
+        const role = response.data.role;
+        const userid = response.data.userId;
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", role);
+        localStorage.setItem("userid", userid);
+        console.log(response.data);
+        // Redirect to dashboard or any page
+        if (role === "ROLE_ADMIN") {
+          navigate("/list_question");
+        } else {
+          navigate("/home");
+        }
+      } catch (error) {
+        console.error(error);
+        formik.setErrors({ email: "Username or password is incorrect" });
+      }
     },
   });
-  
+
   return (
     <div>
       <div className="limiter">
@@ -72,8 +85,8 @@ const Login = () => {
                 <span className="focus-input100" data-symbol="" />
               </div>
               {formik.touched.email && formik.errors.email ? (
-                    <p className="text-danger">{formik.errors.email}</p>
-              ): null}
+                <p className="text-danger">{formik.errors.email}</p>
+              ) : null}
               <div
                 className="wrap-input100 validate-input"
                 data-validate="Password is required"
@@ -91,11 +104,15 @@ const Login = () => {
                 <span className="focus-input100" data-symbol="" />
               </div>
               {formik.touched.password && formik.errors.password ? (
-                    <p className="text-danger">{formik.errors.password}</p>
-              ): null}
+                <p className="text-danger">{formik.errors.password}</p>
+              ) : null}
+              {error && <p className="text-danger">{error}</p>}
               <div className="text-right p-t-8 p-b-31">
                 <a href="#">Forgot password?</a>
               </div>
+              {error && (
+                <p className="text-danger">Username or password are wrong</p>
+              )}
               <div className="container-login100-form-btn">
                 <div className="wrap-login100-form-btn">
                   <div className="login100-form-bgbtn" />

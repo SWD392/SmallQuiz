@@ -5,7 +5,6 @@ import axiosInstance from "../api/axiosInstance";
 import { Navbar } from "./Navbar";
 import "./list_question.scss";
 import { Helmet } from "react-helmet";
-import { useNavigate } from "react-router-dom";
 export default function List_question() {
   const [info, setInfo] = useState([]);
   const token = localStorage.getItem("token");
@@ -19,7 +18,6 @@ export default function List_question() {
   const [answer4, setAnswer4] = useState("");
   const [questions, setQuestions] = useState("");
   const [inputText, setInputText] = useState("");
-  const nagative = useNavigate()
   const handleEdit = (question) => {
     setSelectedQuestion(question);
     setIsPopupOpen(true);
@@ -214,12 +212,7 @@ export default function List_question() {
     setItemOffset(newOffset);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("userid");
-    nagative("/");
-  };
+  
 
   console.log(selectedQuestion);
   return (
@@ -229,7 +222,7 @@ export default function List_question() {
         <title>List Question</title>
         <link rel="canonical" href="http://mysite.com/example" />
   </Helmet>
-      <Navbar handleLogout={handleLogout} />
+      <Navbar />
       <div className="row d-flex justify-content-center mt-2">
         <div className="col-lg-8 col-md-6 col-sm-12 p-0">
           <input

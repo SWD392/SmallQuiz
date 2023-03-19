@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar } from "./Navbar";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 export default function HomeTest() {
   return (
     <>
@@ -27,12 +28,12 @@ export default function HomeTest() {
                     instruction, and practice.
                   </p>
                   <div className="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                    <a
+                    <Link
                       className="btn btn-primary btn-lg px-4 me-sm-3"
-                      href="/quiz"
+                      to="/quiz"
                     >
-                      Get Started{" "}
-                    </a>
+                      Get Started
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import axiosInstance from "../api/axiosInstance";
+import { getTestHistory } from "../service/requestAPI";
 import "./listUserTestHistory.scss";
 import { Navbar } from "./Navbar";
 export const ListUserTestHistory = () => {
@@ -12,13 +12,8 @@ export const ListUserTestHistory = () => {
   useEffect(() => {
     const fetchTest = async () => {
       try {
-        axiosInstance
-          .get(
-            `/getTest?userId=${userid}`
-          )
-          .then((response) => {
-            setTestHistory(response.data);
-          });
+        const testHistory = await getTestHistory(userid);
+        setTestHistory(testHistory)
       } catch (error) {}
     };
 

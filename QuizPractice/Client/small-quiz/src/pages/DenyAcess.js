@@ -10,7 +10,7 @@ export const DenyAcess = () => {
     nagative("/");
   };
   return (
-    <div style={{backgroundImage: "url(./bg-03.jpg)"}} class="text-wrapper">
+    <div class="text-wrapper">
       <div class="title" data-content="404">
         403 - ACCESS DENIED
       </div>

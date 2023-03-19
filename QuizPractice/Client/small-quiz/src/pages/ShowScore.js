@@ -1,10 +1,9 @@
 
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
-import axiosInstance from "../api/axiosInstance";
-import './score.scss'
+import { getResult } from "../service/requestAPI";
+import './score.scss';
 export const ShowScore = (props) => {
 
   <Helmet>
@@ -21,9 +20,7 @@ export const ShowScore = (props) => {
         userAnswerId: props.selectedAnswer[index]
       }));
       try {
-        axiosInstance.post(`http://localhost:8081/getResult?userId=${userid}`, data).then((response) => {
-          console.log(response.data);
-        });
+        await getResult(userid, data)
       } catch (error) {}
     };
 
