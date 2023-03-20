@@ -8,7 +8,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 const Login = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false)
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -42,16 +42,22 @@ const Login = () => {
         localStorage.setItem("userid", userid);
         console.log(response.data);
         // Redirect to dashboard or any page
-        if (role === "ROLE_ADMIN") {
-          navigate("/list_question");
-        } else {
-          navigate("/home");
-        }
+        if(token === null){
+          toast.error("Username or Password is incorrect")
+        }else{
+          if (role === "ROLE_ADMIN") {
+            navigate("/list_question");
+            toast.success("Login succesfully")
+          } else {
+            navigate("/home");
+            toast.success("Login succesfully")
+          }
+        }       
       } catch (error) {
         console.error(error);
         formik.setErrors({ email: "Username or password is incorrect" });
       }
-    },
+    },  
   });
 
   return (
@@ -106,7 +112,7 @@ const Login = () => {
               {formik.touched.password && formik.errors.password ? (
                 <p className="text-danger">{formik.errors.password}</p>
               ) : null}
-              {error && <p className="text-danger">{error}</p>}
+              {error && <p className="text-danger">Incorrect Username or Password</p>}
               <div className="text-right p-t-8 p-b-31">
                 <a href="#">Forgot password?</a>
               </div>
@@ -145,7 +151,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      
       <div id="dropDownSelect1" />
     </div>
   );

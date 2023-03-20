@@ -5,8 +5,7 @@ import "./menu.css";
 import jwt_decode from "jwt-decode";
 import { getInfoUser } from "../service/requestAPI";
 export const Navbar = () => {
-
-  const nagative = useNavigate()
+  const nagative = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -16,7 +15,8 @@ export const Navbar = () => {
   };
 
   const token = localStorage.getItem("token");
-  const [info, setInfo] = useState("")
+  const role = localStorage.getItem("role");
+  const [info, setInfo] = useState("");
 
   const decode = token ? jwt_decode(token) : null;
   useEffect(() => {
@@ -60,48 +60,61 @@ export const Navbar = () => {
                 Home
               </Link>
             </li>
-            {
-              !token ? (
-                <li className="nav-item">
-              <Link
-                to="/login"
-                className="nav-link"
-                aria-current="page"
-                href="#!"
-              >
-                Login
-              </Link>
-            </li>
-              ) : (<li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="/"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Hello {info.firstName} {info.lastName}
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <Link to="/changepassword" className="dropdown-item">
-                    Change Password
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/viewusertest" className="dropdown-item">
-                  View Test History
-                  </Link>
-                </li>
-                <li>
-                  <p onClick={handleLogout} style={{margin: "0", cursor: "pointer"}} className="dropdown-item">
-                    Logout
-                  </p>
-                </li>
-              </ul>
-            </li>)
-            }
+            {!token ? (
+              <li className="nav-item">
+                <Link
+                  to="/login"
+                  className="nav-link"
+                  aria-current="page"
+                  href="#!"
+                >
+                  Login
+                </Link>
+              </li>
+            ) : (
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="/"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Hello {info.firstName} {info.lastName}
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <Link to="/changepassword" className="dropdown-item">
+                      Change Password
+                    </Link>
+                  </li>
+
+                  {role === "ROLE_ADMIN" ? (
+                    <li>
+                      <Link to="/list_question" className="dropdown-item">
+                        List Question
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link to="/viewusertest" className="dropdown-item">
+                        View Test History
+                      </Link>
+                    </li>
+                  )}
+                  <li>
+                    <p
+                      onClick={handleLogout}
+                      style={{ margin: "0", cursor: "pointer" }}
+                      className="dropdown-item"
+                    >
+                      Logout
+                    </p>
+                  </li>
+                </ul>
+              </li>
+            )}
           </ul>
         </div>
       </div>

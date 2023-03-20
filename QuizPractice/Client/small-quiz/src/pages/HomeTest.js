@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar } from "./Navbar";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 export default function HomeTest() {
   return (
     <>
@@ -166,13 +167,6 @@ export default function HomeTest() {
             </div>
             <div className="row gx-5 justify-content-center">
               <div className="col-lg-6">
-                {/* * * * * * * * * * * * * * * **/}
-                {/* * * SB Forms Contact Form * **/}
-                {/* * * * * * * * * * * * * * * **/}
-                {/* This form is pre-integrated with SB Forms.*/}
-                {/* To make this form functional, sign up at*/}
-                {/* https://startbootstrap.com/solution/contact-forms*/}
-                {/* to get an API token!*/}
               </div>
             </div>
           </div>
@@ -183,6 +177,7 @@ export default function HomeTest() {
             <p className="m-0 text-center text-white">SMALL QUÍZ</p>
           </div>
         </footer>
+        <ToastContainer />
       </div>
     </>
   );

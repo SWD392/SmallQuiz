@@ -61,7 +61,7 @@ const SignUp = () => {
         });
         const token = response.data.token;
         localStorage.setItem("token", token);
-        toast("Register succesfully!");
+        toast.success("Register succesfully!");
         navigate("/login");
       } catch (error) {
         toast.error('Register Unsuccesfully!', {
@@ -78,19 +78,6 @@ const SignUp = () => {
     },
   });
 
-  // const handleSignUp = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post("http://localhost:8081/register", {
-  //       username,
-  //       password,
-  //       role,
-  //     });
-  //     const token = response.data.token;
-  //     localStorage.setItem("token", token);
-  //     toast("Register succesfully!");
-  //   } catch (error) {}
-  // };
 
   return (
     <div className="signup-container">

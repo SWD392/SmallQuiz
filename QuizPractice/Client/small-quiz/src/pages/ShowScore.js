@@ -19,6 +19,7 @@ export const ShowScore = (props) => {
         questionId: qid,
         userAnswerId: props.selectedAnswer[index]
       }));
+      console.log(data);
       try {
         await getResult(userid, data)
       } catch (error) {}

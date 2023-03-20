@@ -65,3 +65,13 @@ export const getTestHistory = async (userid) => {
     return null;
   }
 };
+
+export const getAllQuestions = async () => {
+  try {
+    const response = await axiosInstance.get(baseUrl + "/admin/listQuestions");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

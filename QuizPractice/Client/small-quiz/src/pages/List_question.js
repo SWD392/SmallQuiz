@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import ReactPaginate from "react-paginate";
 import { toast, ToastContainer } from "react-toastify";
 import axiosInstance from "../api/axiosInstance";
-import { Navbar } from "./Navbar";
+import { getAllQuestions } from "../service/requestAPI";
+import { formatDate } from "../utils/formateDate";
 import "./list_question.scss";
-import { Helmet } from "react-helmet";
+import { Navbar } from "./Navbar";
 export default function List_question() {
   const [info, setInfo] = useState([]);
   const token = localStorage.getItem("token");
@@ -58,6 +60,7 @@ export default function List_question() {
   };
 
   const handleSubmitCreate = async (event) => {
+    event.preventDefault()
     const dataCreate = {
       questionContent: questions,
       answers: [
@@ -81,7 +84,10 @@ export default function List_question() {
     };
 
     try {
-      await axiosInstance.post(`/admin/create_question`, dataCreate);
+      const res = await axiosInstance.post(`/admin/create_question`, dataCreate);
+      const newQuestion = res.data
+      toast.success('Add Question Succesfully')
+      setInfo(prevInfo => [...prevInfo, newQuestion])
     } catch (error) {
       console.error(error);
     }
@@ -163,10 +169,8 @@ export default function List_question() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get("/admin/listQuestions", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setInfo(response.data);
+        const getQuestions = await getAllQuestions()
+        setInfo(getQuestions);
       } catch (error) {
         console.error(error);
       }
@@ -174,14 +178,7 @@ export default function List_question() {
     fetchData();
   }, [token]);
 
-  function formatDate(newDate) {
-    const d = new Date();
-    const year = d.getFullYear();
-    const date = d.getDate();
-    const monthName = d.getMonth();
-    const formatted = `${date}-${monthName}-${year}`;
-    return formatted.toString();
-  }
+  
 
   let inputHandler = (e) => {
     //convert input text to lower case

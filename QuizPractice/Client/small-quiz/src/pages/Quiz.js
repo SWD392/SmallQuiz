@@ -12,25 +12,25 @@ const Quiz = () => {
   const [questionId, setQuestionId] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState([]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setTimeLeft(timeLeft - 1);
+  //   }, 1000);
 
-    if (timeLeft === 0) {
-      const nextQuestion = currentQuestion + 1;
-      if (nextQuestion < questions.length) {
-        setCurrentQuestion(nextQuestion);
-        setTimeLeft(30);
-      } else {
-        setShowScore(true);
-      }
-    }
+  //   if (timeLeft === 0) {
+  //     const nextQuestion = currentQuestion + 1;
+  //     if (nextQuestion < questions.length) {
+  //       setCurrentQuestion(nextQuestion);
+  //       setTimeLeft(30);
+  //     } else {
+  //       setShowScore(true);
+  //     }
+  //   }
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [timeLeft]);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [timeLeft]);
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -60,8 +60,14 @@ const Quiz = () => {
           questions[currentQuestion]?.answers[index]?.id,
         ]);
       }
-    } else {
-      setShowScore(true);
+    } else if(nextQuestion === questions.length) {
+      setScore(score + 1);
+      setQuestionId([...questionId, questions[currentQuestion]?.id]);
+        setSelectedAnswer([
+          ...selectedAnswer,
+          questions[currentQuestion]?.answers[index]?.id,
+        ]);
+        setShowScore(true);
     }
   };
   const handleNextQuestion = () => {
